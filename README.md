@@ -16,7 +16,7 @@
 
 ### 3. ERD
 
-
+![pjt10_ERD.drawio](../../../OneDrive/바탕 화면/pjt10_ERD.drawio.png)
 
 ###  4. Wireframe
 
