@@ -8,7 +8,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['title', 'movie_title', 'rank', 'content']
         widgets = {
-            'grade': starWidget,
+            'rank': starWidget,
         }
 
 

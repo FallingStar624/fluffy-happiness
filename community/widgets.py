@@ -22,7 +22,7 @@ class AutoCompleteWidget(forms.Select):
 
 class starWidget(forms.TextInput):
     input_type = 'rating'
-    template_name =  "widgets/star_rate.html"
+    template_name =  "community/star_rate.html"
 
     class Media:
         css = {
