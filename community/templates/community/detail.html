@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>DETAIL</h2>
+  <h3>{{ review.pk }} 번째 글</h3>
+  <hr>
+  <p>{{ review.title }}</p>
+  <p>{{ review.movie_title }}</p>
+  <p>{{ review.content }}</p>
+  <p>{{ review.rank }}</p>
+  <p>{{ review.created_at }}</p>
+  <p>{{ review.updated_at }}</p>
+  <hr>
+  <form action="{% url 'community:like' review.pk %}" method="POST">
+    {% csrf_token %}
+    {% if user in review.like_users.all %}
+      <button>cancel</button>
+    {% else %}
+      <button>like</button>
+    {% endif %}
+  </form>
+  <hr>
+  <h4>comment</h4>
+  {% if comments|length %}
+    <p><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+  {% endif %}
+  {% for comment in comments %}
+    <div>
+      {{ comment.user }} - {{ comment.content }}
+    </div>
+  {% empty %}
+    <p><b>댓글이 없어요..</b></p>
+  {% endfor %}
+  <hr>
+  <form action="{% url 'community:create_comment' review.pk %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <input type="submit">
+  </form>
+
+{% endblock content %}
+

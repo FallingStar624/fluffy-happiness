@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>CREATE</h1>
+  
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+      {{ form.title.errors }}
+      <label for="id_title">Title : </label>
+      {{ form.title }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.movie_title.errors }}
+        <label for="id_movie_title">Movie Title : </label>
+        {{ form.movie_title }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.rank.errors }}
+        <label for="id_rank">Rank : </label>
+        {{ form.rank }}
+        {% comment %} {% include 'community/star_rate.html' %} {% endcomment %}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.content.errors }}
+        <label for="id_content">Content : </label>
+        {{ form.content }}
+    </div>
+    <p><input type="submit" value="Send message" /></p>
+    <input type="submit">
+  </form>
+  <hr>
+  <a href="{% url 'community:index' %}">[back]</a>
+
+ <h4>search movie</h4>
+  <div id="autocomplete" class="autocomplete">
+    <input class="autocomplete-input" name="movie" />
+    <ul class="autocomplete-result-list"></ul>
+  </div>
+
+  
+{% endblock content %}
+
+
+{% block script %}
+  <script>
+    new Autocomplete('#autocomplete', {
+
+      search : input => {
+        const url = `/community/search-movie/?movie=${input}`
+        return new Promise(resolve => {
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            resolve(data.data)
+          })
+        })
+      },
+      onSubmit : result => {
+        const selectedMovie = result
+        {{ form.movie_title }} = selectedMovie
+      }
+    })
+
+  </script>
+
+{% endblock script %}
+
+
