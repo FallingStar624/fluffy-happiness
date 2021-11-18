@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Community</h1>
+ 
+ <h4>search movie</h4>
+  <div id="autocomplete" class="autocomplete">
+    <input class="autocomplete-input" name="movie" />
+    <ul class="autocomplete-result-list"></ul>
+  </div>
+
+
+  <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+  <form action="{% url 'community:search' %}" method="POST">
+    {% csrf_token %}
+    <input type="search" placeholder="Search" aria-label="Search" name="review", value="{{review}}">
+    <button type="submit">Search</button>
+  </form>
+  <hr>
+  {% for review in reviews %}
+    {{ review.title }}
+    {{ review.content }}
+    <hr>
+  
+  {% endfor %}
+
+
+  <script>
+    new Autocomplete('#autocomplete', {
+
+      search : input => {
+        const url = `/community/search-movie/?movie=${input}`
+        return new Promise(resolve => {
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            resolve(data.data)
+          })
+        })
+      },
+      onSubmit : result => {
+        console.log(event)
+      }
+    })
+
+  </script>
+
+
+{% endblock content %}
+

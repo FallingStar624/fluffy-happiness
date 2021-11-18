@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>검색 결과</h1>
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    {% if not free_reviews %}
+      <h2>검색 결과가 없습니다.</h2>
+
+    {% else %}
+
+      {% for review in free_reviews.all %}
+        <p>{{review.title}}</p>
+
+      {% endfor %}
+    
+    {% endif %}
+  
+  </form>
+{% endblock content %}
+
