@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
   <h2>DETAIL</h2>
   <h3>{{ review.pk }} 번째 글</h3>
   <hr>
@@ -37,6 +38,8 @@
     {{ comment_form.as_p }}
     <input type="submit">
   </form>
+
+</div>
 
 {% endblock content %}
 
