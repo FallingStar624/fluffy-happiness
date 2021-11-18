@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+
+      <div class="resume-wrap ftco-animate row justify-content-center align-items-center">
+          <div class="col-2">
+            <h1 class="navbar-brand">Login</h1>
+          </div>
+          <div class="col-4">
+            <span style="font-weight: 600; color: #fff;  width: 130px;">ID: {{ form.username }}</span>
+          </div>
+          <div class="col-4">
+            <span style="font-weight: 600; color: #fff;  width: 130px;">PW: {{ form.password }}</span>
+          </div>
+          <div class="col-2">
+            <input type="submit" value="login">
+            <input type="hidden" name="next" value="{{ next }}">
+          </div>
+      </div>
+    
+  </form>
+</div>
+{% endblock content %}
