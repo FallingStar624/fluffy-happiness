@@ -19,6 +19,9 @@ class Movie(models.Model):
     recommend = models.ManyToManyField('self', symmetrical=False, related_name='recommeded')
     watch_users = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='watch_movies', through='CheckTime')
 
+    def __str__(self):
+        return self.title
+
 
 
 class MovieComment(models.Model):
