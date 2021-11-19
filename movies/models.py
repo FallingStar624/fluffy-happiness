@@ -9,11 +9,11 @@ class Genre(models.Model):
 class Movie(models.Model):
     movie_id = models.IntegerField(null=True)
     title = models.CharField(max_length=100)
-    release_date = models.DateField(blank = True, default = '', null = True, help_text = 'today date.')
+    release_date = models.DateTimeField(null=True, blank=True)
     popularity = models.FloatField()
     vote_count = models.IntegerField()
     vote_average = models.FloatField()
-    overview = models.TextField()
+    overview = models.TextField(blank=True)
     poster_path = models.CharField(max_length=200, null=True)
     genres = models.ManyToManyField(Genre)
     recommend = models.ManyToManyField('self', symmetrical=False, related_name='recommeded')
