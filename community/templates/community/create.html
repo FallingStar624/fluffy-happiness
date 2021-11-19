@@ -16,7 +16,11 @@
       <div class="fieldWrapper">
           {{ form.movie_title.errors }}
           <label for="id_movie_title">Movie Title : </label>
-          {{ form.movie_title }}
+          <div style="display: none;">{{ form.movie_title }}</div>
+            <div id="autocomplete" class="autocomplete">
+              <input class="autocomplete-input" name="movie"/>
+              <ul class="autocomplete-result-list"></ul>
+          </div>
       </div>
       <div class="fieldWrapper">
           {{ form.rank.errors }}
@@ -35,33 +39,59 @@
     <hr>
     <a href="{% url 'community:index' %}">[back]</a>
 
-  <h4>search movie</h4>
-    <div id="autocomplete" class="autocomplete">
-      <input class="autocomplete-input" name="movie" />
-      <ul class="autocomplete-result-list"></ul>
-    </div>
+  </div>
 
-</div>
-
-  {% endblock content %}
+{% endblock content %}
 
 {% block script %}
   <script>
+
+  function fn_selTest( val )
+  {
+    var ele = document.getElementById('id_movie_title');
+
+    for( i=0,j=ele.length; i<j; i++ )
+    {
+      if( ele.options[i].innerText == val )
+      {
+        ele.options[i].selected = true;
+        ele.options[i].innerText = val
+        break;
+      }
+    }
+  }
+
     new Autocomplete('#autocomplete', {
 
       search : input => {
         const url = `/community/search-movie/?movie=${input}`
         return new Promise(resolve => {
+          if (input.length < 3) {
+            return resolve([])
+          }
           fetch(url)
           .then(response => response.json())
-          .then(data => {
-            resolve(data.data)
+          .then(response => {
+            resolve(response.data)
           })
         })
       },
+      renderResult: (result, props) => `
+        <li ${props} style="width: 50%;">
+          <span class="wiki-snippet">
+            <img src="http://image.tmdb.org/t/p/original/${result.poster_path}" style="width: 10%;">
+          </span>
+          <span class="wiki-title">
+          ${result.title}
+          </span>
+        </li>
+      `,
+
+      getResultValue: result => result.title,
+
       onSubmit : result => {
-        const selectedMovie = result
-        {{ form.movie_title }} = selectedMovie
+        console.log(result.title)
+        fn_selTest(result.title)
       }
     })
 

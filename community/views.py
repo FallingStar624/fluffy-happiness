@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Review, ReviewComment
 from .forms import ReviewForm, ReviewCommentForm
 from movies.models import Movie
+from django.core import serializers
+from django.forms.models import model_to_dict
 
 # Create your views here.
 
@@ -124,14 +126,18 @@ def search(request):
 
 
 def search_movie(request):
-    context = []
     free_movies = Movie.objects.all()
     movie = request.GET.get('movie')
 
     if movie:
         free_movies = free_movies.filter(title__icontains=movie)
-        
-        for free_movie in free_movies:
-            context.append(free_movie.title)
+        selected = []
 
-    return JsonResponse({'status': 200, 'data': context})
+        for free_movie in free_movies:
+            selected.append(model_to_dict(free_movie, fields=['title', 'poster_path']))
+            
+
+        # context = serializers.serialize('json', selected)
+
+
+    return JsonResponse({'status': 200, 'data': selected})
