@@ -6,13 +6,14 @@
       <h1 class="navbar-brand">Already logined</h1>
     {% else %}
       <h1 class="navbar-brand">Sign Up</h1>
-      <form action="" method="POST" enc_type="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <p>ID: {{ form.username }}</p>
+        {% comment %} <p>ID: {{ form.username }}</p>
         <p>PW: {{ form.password1 }}</p>
         <p>PW_check: {{ form.password2 }}</p>
         <p>E-mail: {{ form.email }}</p>
-        <p>Profile Image: {{ form.profileimage }}</p>
+        <p>Profile Image: {{ form.profileimage }}</p> {% endcomment %}
+        {{ form.as_p }}
         <input type="submit">
       </form>
     {% endif %}
