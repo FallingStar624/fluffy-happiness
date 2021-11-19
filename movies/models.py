@@ -19,6 +19,9 @@ class Movie(models.Model):
     recommend = models.ManyToManyField('self', symmetrical=False, related_name='recommeded')
     watch_users = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='watch_movies', through='CheckTime')
 
+    def __str__(self):
+        return self.title
+
 
 
 class MovieComment(models.Model):
@@ -31,6 +34,6 @@ class MovieComment(models.Model):
 class CheckTime(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    check_time = models.DateTimeField(auto_now_add=True)
+    check_time = models.DateField(auto_now_add=True)
 
 

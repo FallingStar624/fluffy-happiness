@@ -1,3 +1,4 @@
+  {% load static %}
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="../../static/css/flaticon.css">
     <link rel="stylesheet" href="../../static/css/icomoon.css">
     <link rel="stylesheet" href="../../static/css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+    <link rel="stylesheet" href={% static 'css/autocomplete-js.dist.style.css' %}/>
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     {% include '_nav.html' %}
