@@ -9,7 +9,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     movie_id = models.IntegerField(null=True)
     title = models.CharField(max_length=100)
-    release_date = models.DateTimeField(null=True, blank=True)
+    release_date = models.DateField(null=True)
     popularity = models.FloatField()
     vote_count = models.IntegerField()
     vote_average = models.FloatField()
@@ -31,6 +31,6 @@ class MovieComment(models.Model):
 class CheckTime(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    check_time = models.DateTimeField(auto_now_add=True)
+    check_time = models.DateField(auto_now_add=True)
 
 
