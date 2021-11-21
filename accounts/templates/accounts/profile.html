@@ -2,12 +2,13 @@
 
 {% block content %}
   {% with followings=profile_host.followings.all followers=profile_host.followers.all %}
-  <div class="container">
+  <div class="container ftco-about img ftco-section ftco-no-pb">
     <div class="row d-flex">
       <div class="col-md-6 col-lg-5 d-flex">
         <div class="img-about img d-flex align-items-stretch">
           <div class="overlay"></div>
-          <div class="img d-flex align-self-stretch align-items-center" style="background-image:url(images/bg_1.png);">
+          <img src="{{ profile_host.image.url}}" alt="">
+          <div class="img d-flex align-self-stretch align-items-center">
           </div>
         </div>
       </div>
