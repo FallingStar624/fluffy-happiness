@@ -3,17 +3,32 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Review
 from .forms import ReviewForm, ReviewCommentForm
 from movies.models import Movie
+from django.core import serializers
+from django.forms.models import model_to_dict
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+
 
 # Create your views here.
 
 def index(request):
     reviews = Review.objects.all()
+    paginator = Paginator(reviews, 10)
 
-    context = {
-        'reviews': reviews
-    }
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'community/index.html', context)
+    # /movies/?page=2 ajax 요청 => json
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        data = serializers.serialize('json', page_obj)
+        return HttpResponse(data, content_type='application/json')
+    # /movies/ 첫번째 페이지 요청 => html
+    else:
+        context = {
+            'reviews': page_obj,
+        }
+
+        return render(request, 'community/index.html', context)
 
 def create(request):
     if request.method == 'POST':

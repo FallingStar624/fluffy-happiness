@@ -128,7 +128,6 @@ STATIC_URL = '/staticfiles/'
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles',
 ]
-
 AUTH_USER_MODEL = 'accounts.User'
 
 # Default primary key field type
