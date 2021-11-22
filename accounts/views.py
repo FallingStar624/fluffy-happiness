@@ -14,7 +14,7 @@ def signup(request):
         return redirect('accounts:profile', request.user.username)
 
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             return redirect('accounts:login') # 회원가입 완료시 로그인 페이지로 이동
