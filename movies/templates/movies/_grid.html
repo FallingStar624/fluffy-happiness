@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+	
+{% block content %}
+	{% load static %}
+	<div class="container">
+		<section class="grid-wrap">
+			<ul class="grid swipe-down" id="grid">
+				<li class="title-box">
+					<h2>Illustrations</h2>
+				</li>
+				<li><a href="#"><img src="{% static 'movies/img/dummy.png' %}" alt="dummy"><h3>A fantastic title</h3></a></li>
+			</ul>
+		</section>
+	</div>
+{% endblock content %}

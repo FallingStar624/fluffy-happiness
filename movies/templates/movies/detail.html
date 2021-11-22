@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div id="videoapp">
+      <input type="text" id="saveVideoTitle" value="{{ movie.title }} 트레일러" style="display: none;">
+      {% comment %} <iframe :src="[[ searchVideoURL ]]" frameborder="0"></iframe> {% endcomment %}
+      {{ movie.overview }}
+      <hr>
+
+    </div>
+    <div>
+      <h4>댓글 목록</h4>
+      {% if movie_comments|length %}
+        <p><b>{{ movie_comments|length }}개의 댓글이 있습니다.</b></p>
+      {% endif %}
+      <ul id="commentul">
+        {% for comment in movie_comments %}
+          <li>
+            {{ comment.user }} - {{ comment.content }}
+          </li>
+        {% empty %}
+          <p><b>댓글이 없어요..</b></p>
+        {% endfor %}
+      </ul>
+      <hr>
+      <form action="{% url 'movies:create_moviecomment' movie.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" class="btn btn-light">
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+
+
+
+{% block script %}
+<script>
+  API_KEY = 'AIzaSyBM-Z_m_8MqYiK2g62QIwG2UQ5rkT_TgYE'
+  API_URL = 'https://www.googleapis.com/youtube/v3/search'
+
+  
+  const videoapp = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#videoapp',
+    data: {
+      video: [],
+      searchVideoTitle: null,
+      searchVideoURL: null,
+    },
+    // created: function () {
+    //   this.$nextTick(function () {
+    //     this.searchVideoTitle = document.querySelector('#saveVideoTitle').value
+    //     console.log(this.searchVideoTitle)
+
+    //     const params = {
+    //       key: API_KEY,
+    //       part: 'snippet',
+    //       type: 'video',
+    //       q: this.searchVideoTitle,
+    //     }
+
+    //     axios({
+    //       method: 'get',
+    //       url: API_URL,
+    //       params,
+    //     })
+    //       .then(res => {
+    //         this.video = res.data.items[0]
+    //         const videoId = this.video.id.videoId
+    //         this.searchVideoURL = `https://www.youtube.com/embed/${videoId}`
+    //       })
+
+    //       .catch(err => {
+    //         console.log(err)
+    //       })
+
+    //   })
+    // },
+    methods: {
+      createMovieComment: function (event) {
+        event.preventDefault()
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const content = document.querySelector('#id_content').value
+        const moviePk = 23
+  
+        const formData = new FormData()
+        formData.append('content', content)
+        
+        axios({
+          method: 'post',
+          url: `/movies/${moviePk}/comments/create/`,
+          data: formData,
+          headers: {'X-CSRFToken': csrftoken}
+        })
+          .then((res) => {
+            const li = document.createElement('li')
+            console.log(res)
+            li.innerText = `${res.data.username} - ${content}`
+
+            const ul = document.querySelector('#commentul')
+            ul.appendChild(li)
+
+            
+          })     
+      }
+    }
+
+  })
+
+
+</script>
+{% endblock script %}
+

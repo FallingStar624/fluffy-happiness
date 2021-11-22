@@ -1,15 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
   <h1>Community</h1>
  
- <h4>search movie</h4>
-  <div id="autocomplete" class="autocomplete">
-    <input class="autocomplete-input" name="movie" />
-    <ul class="autocomplete-result-list"></ul>
-  </div>
-
-
   <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 
   <form action="{% url 'community:search' %}" method="POST">
@@ -18,34 +12,54 @@
     <button type="submit">Search</button>
   </form>
   <hr>
-  {% for review in reviews %}
-    {{ review.title }}
-    {{ review.content }}
-    <hr>
-  
-  {% endfor %}
-
-
-  <script>
-    new Autocomplete('#autocomplete', {
-
-      search : input => {
-        const url = `/community/search-movie/?movie=${input}`
-        return new Promise(resolve => {
-          fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            resolve(data.data)
-          })
-        })
-      },
-      onSubmit : result => {
-        console.log(event)
-      }
-    })
-
-  </script>
-
-
+	
+	<div class="container">
+		<section class="grid-wrap">
+			<ul class="grid swipe-down review-list" id="grid">
+				<li class="title-box">
+					<h2>Illustrations</h2>
+				</li>
+        {% for review in reviews %}
+				  <li><a href="{% url 'community:detail' review.pk %}"><img src="{% static 'movies/img/dummy.png' %}" alt="dummy"><h3>{{ review.title }}</h3></a></li>
+        {% endfor %}
+			</ul>
+		</section>
+	</div>
 {% endblock content %}
 
+{% block script %}
+<script>
+  let pageNum = 2
+
+  document.addEventListener('scroll', (event) => {
+    console.log(event)
+    const {scrollHeight, scrollTop, clientHeight} = document.body
+    // console.log(scrollHeight, scrollTop, clientHeight)
+    console.log(scrollHeight - Math.round(scrollTop))
+    console.log(clientHeight-1)
+    if (scrollHeight - Math.round(scrollTop) === clientHeight-1) {
+      axios({
+        method: 'get',
+        url: `/community/?page=${pageNum}`,
+        headers: {'x-requested-with': 'XMLHttpRequest'}
+      })
+        .then((res) => {
+          const reviews = res.data
+          
+          reviews.forEach((review) => {
+            const reviewList = document.querySelector('.review-list')
+            const reviewLi = document.createElement('li')
+
+            const reviewHTML = `<a href="community/${review.pk}"><img src="/static/movies/img/dummy.png" alt="dummy"><h3>${ review.title }</h3></a>`
+            reviewLi.innerHTML = reviewHTML
+            reviewLi.className = "shown"
+            reviewLi.style = "position: absolute;"
+            reviewList.appendChild(reviewLi)
+          })
+          pageNum += 1
+        })
+    }
+  })
+
+</script>
+{% endblock %}
