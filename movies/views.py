@@ -47,9 +47,13 @@ def index(request):
 
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
+    movie_comments = movie.moviecomment_set.all()
+    comment_form = MovieCommentForm()
 
     context = {
-        'movie': movie
+        'movie': movie,
+        'movie_comments': movie_comments,
+        'comment_form': comment_form
     }
 
     return render(request, 'movies/detail.html', context)
@@ -104,9 +108,6 @@ def create_moviecomment(request, movie_pk):
         movie_comment.save()
         return redirect('movies:detail', movie.pk)
     
-    else:
-        comment_form = MovieCommentForm()
-    
     context = {
         'comment_form': comment_form,
         'movie': movie,
@@ -116,22 +117,22 @@ def create_moviecomment(request, movie_pk):
 
 
 
-def like(request, review_pk):
-    pass
-    # if request.user.is_authenticated:
-    #     review = get_object_or_404(Movie, pk=review_pk)
-    #     user = request.user
+def watch(request, movie_pk):
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        user = request.user
 
-    #     if review.like_users.filter(pk=user.pk).exists():
-    #         review.like_users.remove(user)
-    #         liked = False
-    #     else:
-    #         review.like_users.add(user)
-    #         liked = True
+        if movie.watch_users.filter(pk=user.pk).exists():
+            movie.watch_users.remove(user)
+            watched = False
+        else:
+            movie.watch_users.add(user)
+            watched = True
 
-    #     context = {
-    #         'liked': liked,
-    #         'count': review.like_users.count()
-    #     }
-    #     return JsonResponse(context)
-    # return redirect('accounts:login')
+        context = {
+            'watched': watched,
+            'count': movie.watch_users.count()
+        }
+        return JsonResponse(context)
+    return redirect('accounts:login')
+

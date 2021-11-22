@@ -112,11 +112,17 @@ def like(request, review_pk):
 
         if review.like_users.filter(pk=user.pk).exists():
             review.like_users.remove(user)
+            liked = False
 
         else:
             review.like_users.add(user)
+            liked = True
 
-        return redirect('community:detail', review_pk)
+        context = {
+            'liked': liked,
+            'count': review.like_users.count()
+        }
+        return JsonResponse(context)
     return redirect('accounts:login')
 
 
