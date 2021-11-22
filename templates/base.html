@@ -1,5 +1,9 @@
   {% load static %}
   <head>
+    {% block startscript %}
+    
+    {% endblock startscript %}
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -30,6 +34,8 @@
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     {% include '_nav.html' %}
     
+
+
     {% block content %}
     {% endblock %}
     <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
@@ -52,19 +58,19 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- container -->
+    
     <script src="{% static 'movies/js/masonry.pkgd.min.js' %}"></script>
     <script src="{% static 'movies/js/imagesloaded.pkgd.min.js' %}"></script>
     <script src="{% static 'movies/js/classie.js' %}"></script>
     <script src="{% static 'movies/js/colorfinder-1.1.js' %}"></script>
-    <script src="{% static 'movies/js/gridScrollFx.js' %}"></script>
-    <script>
-      new GridScrollFx( document.getElementById( 'grid' ), {
-        viewportFactor : 0.4
-      } );
-    </script>
-    
+    {% comment %} <script src="{% static 'movies/js/gridScrollFx.js' %}"></script> {% endcomment %}
     {% block script %}
     {% endblock script %}
+    <script>
+      {% comment %} new GridScrollFx( document.getElementById( 'grid' ), {
+        viewportFactor : 0.4
+      } ); {% endcomment %}
+    </script>
     
   </body>
 </html>
