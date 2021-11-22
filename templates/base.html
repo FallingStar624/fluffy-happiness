@@ -29,7 +29,10 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/component.css' %}" />
 		<script src="{% static 'movies/js/modernizr.custom.js' %}"></script>
 
-
+    {% block addcss %}
+    {% endblock addcss %}
+  
+    
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     {% include '_nav.html' %}
@@ -38,6 +41,7 @@
 
     {% block content %}
     {% endblock %}
+    <script src="https://kit.fontawesome.com/e87731a046.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 
     <script src={% static 'js/jquery.min.js' %}></script>
