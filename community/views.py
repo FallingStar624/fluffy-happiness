@@ -143,8 +143,10 @@ def search_movie(request):
 
     if movie:
         free_movies = free_movies.filter(title__icontains=movie)
-        
-        for free_movie in free_movies:
-            context.append(free_movie)
 
-    return JsonResponse({'status': 200, 'data': context})
+        selected = []
+
+        for free_movie in free_movies:
+            selected.append(model_to_dict(free_movie, fields=['title', 'poster_path']))
+
+    return JsonResponse({'status': 200, 'data': selected})
