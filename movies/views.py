@@ -87,9 +87,10 @@ def search_movie(request):
             
 
         # context = serializers.serialize('json', selected)
-
-
     return JsonResponse({'status': 200, 'data': selected})
+
+
+
 
 
 
