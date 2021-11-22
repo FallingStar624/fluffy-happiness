@@ -137,13 +137,11 @@ def search(request):
 
 
 def search_movie(request):
-    context = []
     free_movies = Movie.objects.all()
     movie = request.GET.get('movie')
-
+    
     if movie:
         free_movies = free_movies.filter(title__icontains=movie)
-
         selected = []
 
         for free_movie in free_movies:
