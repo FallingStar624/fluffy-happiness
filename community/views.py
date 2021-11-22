@@ -112,11 +112,17 @@ def like(request, review_pk):
 
         if review.like_users.filter(pk=user.pk).exists():
             review.like_users.remove(user)
+            liked = False
 
         else:
             review.like_users.add(user)
+            liked = True
 
-        return redirect('community:detail', review_pk)
+        context = {
+            'liked': liked,
+            'count': review.like_users.count()
+        }
+        return JsonResponse(context)
     return redirect('accounts:login')
 
 
@@ -137,13 +143,11 @@ def search(request):
 
 
 def search_movie(request):
-    context = []
     free_movies = Movie.objects.all()
     movie = request.GET.get('movie')
-
+    
     if movie:
         free_movies = free_movies.filter(title__icontains=movie)
-
         selected = []
 
         for free_movie in free_movies:

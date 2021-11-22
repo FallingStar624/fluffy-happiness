@@ -1,5 +1,9 @@
   {% load static %}
   <head>
+    {% block startscript %}
+    
+    {% endblock startscript %}
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -14,7 +18,7 @@
     <link rel="stylesheet" href={% static 'css/flaticon.css' %}>
     <link rel="stylesheet" href={% static 'css/icomoon.css' %}>
     <link rel="stylesheet" href={% static 'css/style.css' %}>
-    <link rel="stylesheet" href={% static 'css/autocomplete-js.dist.style.css' %}/>
+    <link rel="stylesheet" href="{% static 'css/autocomplete-js.dist.style.css' %}"/>
 		
 		<meta name="description" content="Grid Loading and Hover Effect: Recreating Samsung's grid loading effect" />
 		<meta name="keywords" content="grid loading, swipe, effect, slide, masonry, web design, tutorial" />
@@ -23,14 +27,21 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/normalize.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/demo.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/component.css' %}" />
-    <script src="{% static 'movies/js/modernizr.custom.js' %}"></script>
-		
+
+		<script src="{% static 'movies/js/modernizr.custom.js' %}"></script>
+
+    {% block addcss %}
+    {% endblock addcss %}
+
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     {% include '_nav.html' %}
     
+
+
     {% block content %}
     {% endblock %}
+    <script src="https://kit.fontawesome.com/e87731a046.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
     <script src={% static 'js/jquery.min.js' %}></script>
     <script src={% static 'js/jquery-migrate-3.0.1.min.js' %}></script>
@@ -53,17 +64,18 @@
     {% block script %}
     {% endblock script %}
     <!-- container -->
+    
     <script src="{% static 'movies/js/masonry.pkgd.min.js' %}"></script>
     <script src="{% static 'movies/js/imagesloaded.pkgd.min.js' %}"></script>
     <script src="{% static 'movies/js/classie.js' %}"></script>
     <script src="{% static 'movies/js/colorfinder-1.1.js' %}"></script>
-    <script src="{% static 'movies/js/gridScrollFx.js' %}"></script>
+    {% comment %} <script src="{% static 'movies/js/gridScrollFx.js' %}"></script> {% endcomment %}
+    {% block script %}
+    {% endblock script %}
     <script>
-      new GridScrollFx( document.getElementById( 'grid' ), {
-        viewportFactor : 0.4,
-        minDelay : 0,
-        maxDelay : 500,
-      } );
+      {% comment %} new GridScrollFx( document.getElementById( 'grid' ), {
+        viewportFactor : 0.4
+      } ); {% endcomment %}
     </script>
     
   </body>

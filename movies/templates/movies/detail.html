@@ -7,8 +7,18 @@
       {% comment %} <iframe :src="[[ searchVideoURL ]]" frameborder="0"></iframe> {% endcomment %}
       {{ movie.overview }}
       <hr>
-
     </div>
+
+    <div>
+        {% csrf_token %}
+        {% if user in movie.watch_users.all %}
+          <i data-movie-pk="{{ movie.pk }}" class="far fa-eye" style="color: white" id="check"></i>
+        {% else %}
+          <i data-movie-pk="{{ movie.pk }}" class="far fa-eye-slash" style="color: white" id="check"></i>
+        {% endif %}
+      <span id="watch-count-{{ movie.pk }}">{{ movie.watch_users.all|length }}</span>명이 시청
+    </div>
+    
     <div>
       <h4>댓글 목록</h4>
       {% if movie_comments|length %}
@@ -36,6 +46,34 @@
 
 
 {% block script %}
+<script>
+  const checks = document.querySelectorAll('#check')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  checks.forEach((check) => {
+    console.log(check)
+    check.addEventListener('click', (event) => {
+      console.log("123")
+      const moviePk = event.target.dataset.moviePk
+      axios.post(`/movies/${moviePk}/watch/`, {}, {
+        headers: {'X-CSRFToken': csrftoken}
+      })
+        .then((res) => {
+          console.log(res)
+          console.log(event)
+          event.target.classList.toggle('fa-eye')
+          event.target.classList.toggle('fa-eye-slash')
+
+          const watchSpan = document.querySelector(`#watch-count-${moviePk}`)
+          watchSpan.innerText = res.data.count
+        })
+    })
+  })
+</script>
+
+
+
+
 <script>
   API_KEY = 'AIzaSyBM-Z_m_8MqYiK2g62QIwG2UQ5rkT_TgYE'
   API_URL = 'https://www.googleapis.com/youtube/v3/search'
@@ -104,8 +142,11 @@
 
             
           })     
+      },
+      watchcheck: function (event) {
+        console.log(event)
       }
-    }
+    },
 
   })
 

@@ -11,5 +11,5 @@ urlpatterns = [
     path('api-genre/', views.api_genre),
     path('<int:movie_pk>/', views.detail, name='detail'),
     path('<int:movie_pk>/comments/create/', views.create_moviecomment, name='create_moviecomment'),
-    path('<int:movie_pk>/like/', views.like, name='like'),
+    path('<int:movie_pk>/watch/', views.watch, name='watch'),
 ]
