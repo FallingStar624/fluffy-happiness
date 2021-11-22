@@ -8,7 +8,8 @@
 
 
 {% block content %}
-  <div id="app" class="mt-3 container">
+<div class="container" id="app">
+  <div class="mt-3">
     <span id="autocomplete" class="autocomplete">
       <input class="autocomplete-input" name="movie"/>
       <ul class="autocomplete-result-list"></ul>
@@ -57,7 +58,6 @@
     </div> {% endcomment %}
 
   {% comment %} </div> {% endcomment %}
-    
     <section class="grid-wrap">
       <ul class="grid swipe-down" id="grid">
         <li class="title-box">
@@ -73,7 +73,6 @@
     </section>
 
   </div>
-
 {% comment %} 
     <section class="grid-wrap">
       <ul class="grid swipe-down" id="grid">
@@ -163,7 +162,7 @@
       
       }
     }) }*/
- 
+  
     const app = new Vue({
       delimiters: ['[[', ']]'],
       el: '#app',
@@ -508,4 +507,3 @@
 
   </script>
 {% endblock script %}
-
