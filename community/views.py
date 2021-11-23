@@ -18,17 +18,11 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # /movies/?page=2 ajax 요청 => json
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        data = serializers.serialize('json', page_obj)
-        return HttpResponse(data, content_type='application/json')
-    # /movies/ 첫번째 페이지 요청 => html
-    else:
-        context = {
-            'reviews': page_obj,
-        }
+    context = {
+        'reviews': page_obj,
+    }
 
-        return render(request, 'community/index.html', context)
+    return render(request, 'community/index.html', context)
 
 def create(request):
     if request.method == 'POST':
@@ -88,21 +82,24 @@ def delete(request, review_pk):
 
 
 def create_comment(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    comment_form = ReviewCommentForm(request.POST)
-    if comment_form.is_valid():
-        comment = comment_form.save(commit=False)
-        comment.review = review
-        comment.user = request.user
-        comment.save()
-        return redirect('community:detail', review.pk)
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        comment_form = ReviewCommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.review = review
+            comment.user = request.user
+            comment.save()
+            cnt= len(review.reviewcomment_set.all())
 
-    context = {
-        'comment_form': comment_form,
-        'review': review,
-        'comments': review.reviewcomment_set.all(),
-    }
-    return render(request, 'community/detail.html', context)
+            context = {
+                'username': request.user.username,
+                'content': comment.content,
+                'cnt': cnt
+            }
+            return JsonResponse(context)
+        return redirect('community:detail', review.pk)
+    return redirect('accounts:login')
 
 
 def like(request, review_pk):

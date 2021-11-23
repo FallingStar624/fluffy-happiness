@@ -1,65 +1,43 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 {% load static %}
 
+{% block script %}
+  <style>
+    #cutcontent {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      /* 여러 줄 자르기 추가 스타일 */ 
+      white-space: normal; 
+      line-height: 1.2; 
+      height: 3.6em; 
+      word-wrap: break-word; 
+      display: -webkit-box; 
+      -webkit-line-clamp: 3; 
+      -webkit-box-orient: vertical;
+    }
+  
+  </style>
+
+{% endblock script %}
+
+
 {% block content %}
-  <h1>Community</h1>
- 
   <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 
-  <form action="{% url 'community:search' %}" method="POST">
-    {% csrf_token %}
-    <input type="search" placeholder="Search" aria-label="Search" name="review", value="{{review}}">
-    <button type="submit">Search</button>
-  </form>
-  <hr>
-	
-	<div class="container">
-		<section class="grid-wrap">
-			<ul class="grid swipe-down review-list" id="grid">
-				<li class="title-box">
-					<h2>Illustrations</h2>
-				</li>
-        {% for review in reviews %}
-				  <li><a href="{% url 'community:detail' review.pk %}"><img src="{% static 'movies/img/dummy.png' %}" alt="dummy"><h3>{{ review.title }}</h3></a></li>
-        {% endfor %}
-			</ul>
-		</section>
-	</div>
+  {% include 'community/_card.html' %}
+
+  <div class="d-flex justify-content-center">
+      {% bootstrap_pagination reviews %}
+  </div>
+  <div class="container d-flex justify-content-between pb-2">
+    <form class="my-auto" action="{% url 'community:search' %}" method="POST">
+      {% csrf_token %}
+      <input type="search" placeholder="검색어를 입력해주세요." aria-label="Search" name="review", value="{{review}}">
+      <button type="submit" class="btn btn-white btn-outline-white">검색</button>
+    </form>
+    <button class="btn btn-primary my-auto">작성</button>
+  </div>
 {% endblock content %}
-
-{% block script %}
-<script>
-  let pageNum = 2
-
-  document.addEventListener('scroll', (event) => {
-    console.log(event)
-    const {scrollHeight, scrollTop, clientHeight} = document.body
-    // console.log(scrollHeight, scrollTop, clientHeight)
-    console.log(scrollHeight - Math.round(scrollTop))
-    console.log(clientHeight-1)
-    if (scrollHeight - Math.round(scrollTop) === clientHeight-1) {
-      axios({
-        method: 'get',
-        url: `/community/?page=${pageNum}`,
-        headers: {'x-requested-with': 'XMLHttpRequest'}
-      })
-        .then((res) => {
-          const reviews = res.data
-          
-          reviews.forEach((review) => {
-            const reviewList = document.querySelector('.review-list')
-            const reviewLi = document.createElement('li')
-
-            const reviewHTML = `<a href="community/${review.pk}"><img src="/static/movies/img/dummy.png" alt="dummy"><h3>${ review.title }</h3></a>`
-            reviewLi.innerHTML = reviewHTML
-            reviewLi.className = "shown"
-            reviewLi.style = "position: absolute;"
-            reviewList.appendChild(reviewLi)
-          })
-          pageNum += 1
-        })
-    }
-  })
-
-</script>
-{% endblock %}

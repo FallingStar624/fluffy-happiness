@@ -7,8 +7,6 @@
     #id_content {
       height: 50px;
     }
-
-
   </style>
 
 {% endblock addcss %}
@@ -48,21 +46,25 @@
         </div>
 
         <h4>comment</h4>
-        {% if comments|length %}
-          <p><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
-        {% endif %}
-        {% for comment in comments %}
-          <div>
-            {{ comment.user }} - {{ comment.content }}
-          </div>
-        {% empty %}
-          <p><b>댓글이 없어요..</b></p>
-        {% endfor %}
-        <hr>
-        <form action="{% url 'community:create_comment' review.pk %}" method="POST">
+        <div id="comment-area">
+          {% if comments|length %}
+            <p id="cnt-comment"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+          {% endif %}
+          {% for comment in comments %}
+            <div>
+              {{ comment.user }} - {{ comment.content }}
+            </div>
+          {% empty %}
+            <p id="none-comment"><b>댓글이 없어요..</b></p>
+          {% endfor %}
+        </div>
+          <hr>
+        <form class="d-flex justufy-content-start" method="POST" id="comment-form" data-review-pk="{{ review.pk }}">
           {% csrf_token %}
-          {{ comment_form.as_p }}
-          <input type="submit" class="btn btn-light">
+          <div class="my-auto p-2">
+            <textarea name="content" id="id_content" cols="40" rows="10"></textarea>
+          </div>
+          <p class="mt-3"><input type="submit" class="btn btn-white btn-outline-white"></p>
         </form>
       </div>
       
@@ -79,12 +81,6 @@
 {% endblock content %}
 
 {% block script %}
-
-  <script>
-    const label = document.querySelector('label')
-
-    label.innerText = '댓글'
-  </script>
 
   <script>
     const hearts = document.querySelectorAll('.fa-heart')
@@ -112,6 +108,49 @@
           })
       })
     })
+  </script>
+    
+  <script>
+    const commentForm = document.querySelector('#comment-form')
+
+    commentForm.addEventListener('submit', function (event) {
+      event.preventDefault()
+      
+      const reviewPk = event.target.dataset.reviewPk
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const content = document.querySelector('#id_content').value
+
+      const formData = new FormData()
+      formData.append('content', content)
+      
+      axios({
+        method: 'post',
+        url: `/community/${reviewPk}/comments/create/`,
+        data: formData,
+        headers: {'X-CSRFToken': csrftoken}
+      })
+        .then((res) => {
+          const commentArea = document.querySelector('#comment-area')
+          const cntComment = document.querySelector('#cnt-comment')
+          const div = document.createElement('div')
+          const mb = document.createElement('b')
+
+          if (commentArea.innerText == "댓글이 없어요..") {
+            const p = document.querySelector('#none-comment')
+            p.remove()
+          }
+          
+          cntComment.innerText = ""
+          mb.innerText = `${res.data.cnt}개의 댓글이 있습니다.`
+          cntComment.appendChild(mb)
+
+          div.innerText = `${res.data.username} - ${res.data.content}`
+          commentArea.appendChild(div)
+
+          event.target.reset()
+        })
+    })
+  
   </script>
 
 {% endblock script %}
