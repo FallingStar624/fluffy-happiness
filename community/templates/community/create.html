@@ -4,16 +4,20 @@
 {% block content %}
   <div class="container">
     <section class="ftco-section contact-section ftco-no-pb" id="contact-section">
-      <h1>CREATE</h1>
+      {% if request.resolver_match.url_name == 'create' %}
+        <h1>CREATE</h1>
+      {% elif request.resolver_match.url_name == 'update' %}
+        <h1>UPDATE</h1>
+      {% endif %}
       
       <div class="row no-gutters block-9">
         <div class="col-md-6 order-md-last d-flex">
-          <form action="{% url 'community:create' %}" method="POST" class="bg-light p-4 p-md-5 contact-form mb-0">
+          <form action="" method="POST" class="bg-light p-4 p-md-5 contact-form mb-0">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="fieldWrapper form-group">
               {{ form.title.errors }}
-              <input type="text" class="form-control" placeholder="Title" id="id_title" name="title">
+              <input type="text" class="form-control" placeholder="Title" required_id="id_title" name="title">
             </div>
             <div class="fieldWrapper form-group">
                 {{ form.movie_title.errors }}

@@ -56,7 +56,7 @@ def detail(request, review_pk):
 
 def update(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
-
+    
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
