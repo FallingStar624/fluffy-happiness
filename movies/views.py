@@ -25,23 +25,12 @@ def home(request):
 
 def index(request):
     genres = Genre.objects.all()
-    # movies = Movie.objects.all()
-    # paginator = Paginator(movies, 10)
 
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-
-    # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-    #     data = serializers.serialize('json', page_obj)
-    #     return HttpResponse(data, content_type='application/json')
-
-    # else:
     context = {
         'genres': genres,
-        # 'movies': page_obj
     }
 
-    return render(request, 'movies/example.html', context)
+    return render(request, 'movies/index.html', context)
 
 
 

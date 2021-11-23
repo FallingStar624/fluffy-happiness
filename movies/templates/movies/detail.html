@@ -3,9 +3,11 @@
 {% block content %}
   <div class="container">
     <div id="videoapp">
-      <input type="text" id="saveVideoTitle" value="{{ movie.title }} 트레일러" style="display: none;">
-      {% comment %} <iframe :src="[[ searchVideoURL ]]" frameborder="0"></iframe> {% endcomment %}
-      {{ movie.overview }}
+      <input type="text" id="saveVideoTitle" value="{{ movie.title }} trailer {{ movie.release_date|date:"Y" }}" style="display: none;">
+      <iframe :src="[[ searchVideoURL ]]" frameborder="0" width="100%" height="66%"></iframe>
+      
+      <h3>🎬{{ movie.title }}</h3>
+      <p>{{ movie.overview }}</p>
       <hr>
     </div>
 
@@ -20,7 +22,7 @@
     </div>
     
     <div>
-      <h4>댓글 목록</h4>
+      <h4>🌭Comment</h4>
       <div id="movie-comment-area">
         {% if movie_comments|length %}
           <p id="cnt-movie-comment"><b>{{ movie_comments|length }}개의 댓글이 있습니다.</b></p>
@@ -30,7 +32,7 @@
               {{ comment.user }} - {{ comment.content }}
             </div>
           {% empty %}
-            <p id="none-movie-comment"><b>댓글이 없어요..</b></p>
+            <p id="cnt-movie-comment"><b>댓글이 없어요..</b></p>
           {% endfor %}
       </div>
       <hr>
@@ -99,8 +101,8 @@
           const mb = document.createElement('b')
 
           if (commentArea.innerText == "댓글이 없어요..") {
-            const p = document.querySelector('#none-movie-comment')
-            p.remove()
+            const p = document.querySelector('#cnt-movie-comment')
+            p.innerText = ""
           }
           
           cntComment.innerText = ""
@@ -131,35 +133,35 @@
       searchVideoTitle: null,
       searchVideoURL: null,
     },
-    // created: function () {
-    //   this.$nextTick(function () {
-    //     this.searchVideoTitle = document.querySelector('#saveVideoTitle').value
-    //     console.log(this.searchVideoTitle)
+    created: function () {
+      this.$nextTick(function () {
+        this.searchVideoTitle = document.querySelector('#saveVideoTitle').value
+        console.log(this.searchVideoTitle)
 
-    //     const params = {
-    //       key: API_KEY,
-    //       part: 'snippet',
-    //       type: 'video',
-    //       q: this.searchVideoTitle,
-    //     }
+        const params = {
+          key: API_KEY,
+          part: 'snippet',
+          type: 'video',
+          q: this.searchVideoTitle,
+        }
 
-    //     axios({
-    //       method: 'get',
-    //       url: API_URL,
-    //       params,
-    //     })
-    //       .then(res => {
-    //         this.video = res.data.items[0]
-    //         const videoId = this.video.id.videoId
-    //         this.searchVideoURL = `https://www.youtube.com/embed/${videoId}`
-    //       })
+        axios({
+          method: 'get',
+          url: API_URL,
+          params,
+        })
+          .then(res => {
+            this.video = res.data.items[1]
+            const videoId = this.video.id.videoId
+            this.searchVideoURL = `https://www.youtube.com/embed/${videoId}`
+          })
 
-    //       .catch(err => {
-    //         console.log(err)
-    //       })
+          .catch(err => {
+            console.log(err)
+          })
 
-    //   })
-    // },
+      })
+    },
     methods: {
       watchcheck: function (event) {
         console.log(event)
