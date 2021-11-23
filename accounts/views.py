@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_POST, require_http_methods
 from .forms import CustomUserCreationForm
+from movies.models import CheckTime
+from community.models import Review
+from django.http.response import JsonResponse
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -51,8 +54,12 @@ def logout(request):
 @login_required
 def profile(request, username):
     profile_host = get_object_or_404(get_user_model(), username=username)
+    host_movies = CheckTime.objects.filter(user_id=profile_host.pk)
+    host_reviews = Review.objects.filter(user_id=profile_host.pk)
     context = {
         'profile_host': profile_host,
+        'host_movies': host_movies,
+        'host_reviews': host_reviews,
     }
     return render(request, 'accounts/profile.html', context)
 

@@ -4,10 +4,12 @@
         {% comment %} home 화면으로 가도록 하이퍼링크 {% endcomment %}
         {% if user.is_authenticated %}
         <div>Welcome <a href="{% url 'accounts:profile' user.username %}">{{ user }}</a>!</div>
-        <form action="{% url 'accounts:logout' %}" method="POST" id="logout-form">
-          {% csrf_token %}
-          <a href="#" onclick="document.querySelector('#logout-form').submit()">logout</a>
-        </form>
+				<div class="d-felx">
+					<form class="my-auto" action="{% url 'accounts:logout' %}" method="POST" id="logout-form">
+						{% csrf_token %}
+						<a href="#" onclick="document.querySelector('#logout-form').submit()">logout</a>
+					</form>
+				</div>
         {% else %}
         <div><a href="{% url 'accounts:signup'%}">signup</a></div>
         <div><a href="{% url 'accounts:login' %}">login</a></div>
@@ -20,8 +22,8 @@
 	        <ul class="navbar-nav nav ml-auto">
 	          <li class="nav-item"><a href="#" class="nav-link"><span>Home</span></a></li>
 	          <li class="nav-item"><a href="#" class="nav-link"><span>About</span></a></li>
-	          <li class="nav-item"><a href="#" class="nav-link"><span>Movie</span></a></li>
-	          <li class="nav-item"><a href="#" class="nav-link"><span>Review</span></a></li>
+	          <li class="nav-item"><a href="{% url 'movies:index' %}" class="nav-link"><span>Movie</span></a></li>
+	          <li class="nav-item"><a href="{% url 'community:index' %}" class="nav-link"><span>Review</span></a></li>
 	        </ul>
 	      </div>
 	    </div>
