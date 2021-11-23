@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 from django.http.response import JsonResponse
 from django.core.paginator import Paginator
 from .forms import MovieCommentForm
+from community.models import Review
 
 
 
@@ -16,7 +17,7 @@ def home(request):
     movies = Movie.objects.all()
 
     context = {
-        'movies': movies
+        'movies': movies,
     }
 
     return render(request, 'movies/home.html', context)

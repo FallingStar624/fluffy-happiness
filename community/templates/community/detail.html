@@ -7,6 +7,10 @@
     #id_content {
       height: 50px;
     }
+
+    #review-content {
+      word-break: break-all;
+    }
   </style>
 
 {% endblock addcss %}
@@ -24,7 +28,9 @@
         <h2>{{ review.movie_title }}리뷰</h2>
         <h5>{{ review.title }}</h5>
         <hr>
-        {{ review.content }}
+        <div id="review-content">
+          {{ review.content }}
+        </div>
         <hr>
         <span>별점 : </span>
         {% for j in "x"|rjust:'5' %}

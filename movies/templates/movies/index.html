@@ -21,7 +21,7 @@
       padding-bottom: calc(100%/16 * 4);
     }
 
-    #app > nav > ul > li > button {
+    #app > div > nav > ul > li > button {
       background-color: black;
       border-color: #999999;
       border-width: medium;
@@ -39,63 +39,63 @@
 
 
 {% block content %}
-<div class="container" id="app">
-  <div class="mt-3">
-    <span id="autocomplete" class="autocomplete">
-      <input class="autocomplete-input" name="movie"/>
-      <ul class="autocomplete-result-list"></ul>
-    </span>
-    <input type="text" id="savePK" value=-1 style="display: none;">
-    <input type="submit" @click="selectedMovie" value="search">
+  <div class="container" id="app">
+    <div class="mt-3">
+      <span id="autocomplete" class="autocomplete">
+        <input class="autocomplete-input" name="movie"/>
+        <ul class="autocomplete-result-list"></ul>
+      </span>
+      <input type="text" id="savePK" value=-1 style="display: none;">
+      <input type="submit" @click="selectedMovie" value="search">
 
-    <span>장르</span>
-    <select v-model="genreStatus" name="" id="">
-      <option value="all">전체</option>
-      {% for genre in genres %}
-        <option value="{{ genre.pk }}">{{ genre.name }}</option>
-      {% endfor %}
-    </select>
-    <span>평점</span>
-    <select v-model="voteAverage" name="" id="">
-      {% for i in '0123456789'|make_list %}
-        <option value="{{ i }}">{{ i }}</option>
-      {% endfor %}
-    </select>
-    <span>이상</span>
+      <span>장르</span>
+      <select v-model="genreStatus" name="" id="">
+        <option value="all">전체</option>
+        {% for genre in genres %}
+          <option value="{{ genre.pk }}">{{ genre.name }}</option>
+        {% endfor %}
+      </select>
+      <span>평점</span>
+      <select v-model="voteAverage" name="" id="">
+        {% for i in '0123456789'|make_list %}
+          <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <span>이상</span>
 
 
-    <div class="row mt-3">
-      <div class="card col-3" style="width: 18rem; background-color: hsl(75, 3%, 3%);" v-for="movie in displayedPosts" :key="movie.pk">
-        <a :href="`/movies/${movie.pk}/`">
-          <img v-if="movie.fields.poster_path" :src="`http://image.tmdb.org/t/p/original/${movie.fields.poster_path}`" class="card-img-top" alt="">
-          <img v-else src="https://wrenchway.com/wp-content/uploads/2021/08/not-allowed.png" class="card-img-top unknown" alt="null입니다.">
-        </a>
-        <div class="card-body">
-          <p class="card-text" style="font-family:'Black Han Sans', sans-serif; font-weight: bold; text-align: center;">[[ movie.fields.title ]]</p>
+      <div class="row mt-3">
+        <div class="card col-3" style="width: 18rem; background-color: hsl(75, 3%, 3%);" v-for="movie in displayedPosts" :key="movie.pk">
+          <a :href="`/movies/${movie.pk}/`">
+            <img v-if="movie.fields.poster_path" :src="`http://image.tmdb.org/t/p/original/${movie.fields.poster_path}`" class="card-img-top" alt="">
+            <img v-else src="https://wrenchway.com/wp-content/uploads/2021/08/not-allowed.png" class="card-img-top unknown" alt="null입니다.">
+          </a>
+          <div class="card-body">
+            <p class="card-text" style="font-family:'Black Han Sans', sans-serif; font-weight: bold; text-align: center;">[[ movie.fields.title ]]</p>
+          </div>
         </div>
       </div>
+
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-2 secondary">
+        <ul class="pagination">
+          <li class="page-item">
+            <button type="button" class="page-link" v-if="page != 1" @click="page--"> « </button>
+          </li>
+          <li class="page-item">
+            <button type="button" class="page-link" v-for="pageNumber in pages.slice(page-1, page+2)" @click="page = pageNumber"> [[pageNumber]] </button>
+          </li>
+          <li class="page-item">
+            <button type="button" @click="page++" v-if="page < pages.length" class="page-link"> » </button>
+          </li>
+        </ul>
+      </nav>	
+
     </div>
-
-    <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-2 secondary">
-      <ul class="pagination">
-        <li class="page-item">
-          <button type="button" class="page-link" v-if="page != 1" @click="page--"> « </button>
-        </li>
-        <li class="page-item">
-          <button type="button" class="page-link" v-for="pageNumber in pages.slice(page-1, page+2)" @click="page = pageNumber"> [[pageNumber]] </button>
-        </li>
-        <li class="page-item">
-          <button type="button" @click="page++" v-if="page < pages.length" class="page-link"> » </button>
-        </li>
-      </ul>
-    </nav>	
-
   </div>
+{% endblock %}
 
-  {% endblock %}
 
-
-  {% block script %}
+{% block script %}
   <script>
 
 

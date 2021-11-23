@@ -1,1 +1,67 @@
 {% extends 'base.html' %}
+
+{% block addcss %}
+  <style>
+    .target {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      /* 여러 줄 자르기 추가 스타일 */ 
+      white-space: normal; 
+      line-height: 1.2; 
+      height: 3.6em; 
+      text-align: left; 
+      word-wrap: break-word; 
+      display: -webkit-box; 
+      -webkit-line-clamp: 3; 
+      -webkit-box-orient: vertical; }
+  </style>
+
+{% endblock addcss %}
+
+{% block content %}
+  <section id="home-section" class="hero">
+		  <div class="home-slider  owl-carousel">
+	      <div class="slider-item ">
+	      	<div class="overlay"></div>
+	        <div class="container">
+	          <div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+	          	<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/parasite_poster.jpg);">
+	          		<div class="overlay"></div>
+	          	</div>
+		          <div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+		          	<div class="text">
+		          		<span class="subheading">기생충</span>
+			            <h1 class="mb-4 mt-3" style="font-family:'Black Han Sans', sans-serif; font-weight: normal; width: 400px;">빈부격차에 대한 현실</h1>
+			            <h2 class="mb-4" style="color: #ffbd39;">Reviewer1</h2>
+									<span class="mb-4 target">거친 사랑의 심장의 얼음과 청춘을 끓는 것이다. 창공에 것은 속에서 무엇을 실로 아니다. 이상은 열락의 때까지 그들은 희망의 피가 그들은 피에 미묘한 위하여서. 소리다.이것은 지혜는 바로 구하지 이것을 시들어 남는 품고 그리하였는가? 보이는 오아이스도 인생에 공자는 영원히 끓는다. 주며, 풀이 할지니, 무한한 그러므로 뜨거운지라, 풀이 넣는 위하여서. 피고, 군영과 듣기만 꽃이 수 소리다.이것은 가는 철환하였는가? 역사를 용기가 고동을 천지는 봄바람을 것은 실로 뿐이다. 안고, 없으면, 눈에 얼음에 곳으로 봄날의 가는 것이다. 그와 위하여 하는 이상 뿐이다. </span>
+			            <p><a href="#" class="btn btn-white btn-outline-white py-3 px-4">more</a></p>
+		            </div>
+		          </div>
+	        	</div>
+	        </div>
+	      </div>
+
+	      <div class="slider-item">
+	      	<div class="overlay"></div>
+	        <div class="container">
+	          <div class="row d-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+	          	<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/movie_poster.jpg);">
+	          		<div class="overlay"></div>
+	          	</div>
+		          <div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+		          	<div class="text">
+		          		<span class="subheading">가장 보통의 연애</span>
+			            <h1 class="mb-4 mt-3" style="font-family:'Black Han Sans', sans-serif; font-weight: normal; width: 400px;">쉽게 연애하는 여자와 사랑에 서툰 남자의 만남</h1>
+			            <p><a href="#" class="btn btn-primary py-3 px-4">More</a></p>
+		            </div>
+		          </div>
+	        	</div>
+	        </div>
+	      </div>
+	    </div>
+    </section>
+
+{% endblock content %}
+
