@@ -16,7 +16,7 @@ class Movie(models.Model):
     overview = models.TextField(blank=True)
     poster_path = models.CharField(max_length=200, null=True)
     genres = models.ManyToManyField(Genre)
-    recommend = models.ManyToManyField('self', symmetrical=False, related_name='recommeded')
+    recommend = models.ManyToManyField('self', symmetrical=False, related_name='recommended')
     watch_users = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='watch_movies', through='CheckTime')
 
     def __str__(self):
