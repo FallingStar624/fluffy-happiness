@@ -27,6 +27,7 @@
   border-top-color:transparent;
   border-radius:0 0 8px 8px;
   z-index:2}
+
     
 .autocomplete[data-loading=true]:after{
   content:"";
@@ -57,7 +58,6 @@
   border-top-color:transparent;
   border-radius:0 0 8px 8px;
   padding-bottom:8px;
-  width: 50%;
 }
 
 [data-position=above] .autocomplete-result-list{
@@ -65,7 +65,6 @@
   border-bottom-color:transparent;
   border-radius:8px 8px 0 0;
   padding-top:8px;
-  width: 50%;
 }
 
 .autocomplete-result{

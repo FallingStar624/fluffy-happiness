@@ -7,7 +7,7 @@
       <div class="col-md-6 col-lg-5 d-flex">
         <div class="img-about img d-flex align-items-stretch">
           <div class="overlay"></div>
-          <img src="{{ profile_host.image.url}}" alt="">
+          <img src="{{ profile_host.image.url}}" style="border-radius: 50%" alt="">
           <div class="img d-flex align-self-stretch align-items-center">
           </div>
         </div>
@@ -19,9 +19,9 @@
             <h2 class="mb-4">{{ profile_host }}</h2>
             <div class="d-flex justify-content-between">
               <p class="placeholder-wave text-dark font-weight-bold">
-                <span class="placeholder px-3" style="color: #ffc107;">#action</span>
-                <span class="placeholder px-3" style="color: #ffc107;">#S/F</span>
-                <span class="placeholder px-3" style="color: #ffc107;">#Fantasy</span>
+                {% for genre in most_genres %}
+                  <span class="placeholder px-3" style="color: #ffc107;">#{{ genre }}</span>
+                {% endfor %}
               </p>
             </div>
             <ul class="about-info mt-4 px-md-0 px-2">
@@ -49,6 +49,83 @@
         </div>
       </div>
     </div>
+    <div class="app">
+      <div class="d-flex justify-content-around mt-5">
+        <button id="movieBtn" type="button" class="btn btn-outline-warning active" @click="switchMovie">
+          {{ user.username }}님의 영화들
+        </button>
+        <button id="reviewBtn" type="button" class="btn btn-outline-warning" @click="switchReview">
+          {{ user.username }}님의 리뷰들
+        </button>
+      </div>
+      {% comment %} 버튼을 누르면 나오는 영화/댓글 목록 {% endcomment %}
+      <div class="tab-content">
+        {% comment %} user 영화목록 {% endcomment %}
+        <div class="tab-pane fade show active" id="user_movies" v-if="movies">
+          <div class="row mt-5">
+            {% for movie in host_movies %}
+            <div class="col-md-3">
+              <div class="project img ftco-animate d-flex justify-content-center align-items-center fadeInUp ftco-animated" style="background-image: url(http://image.tmdb.org/t/p/original/{{ movie.movie.poster_path }});">
+                <div class="overlay"></div>
+                <div class="text text-center p-4">
+                  <img src="" alt="">
+                  <h3><a href="#">{{ movie.movie }}</a></h3>
+                  <span>{{ movie.check_time}}</span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% comment %} user 리뷰 목록 {% endcomment %}
+        <div class="tab-pane show active" id="user_reviews" v-if="reviews">
+          <div class="row mt-5">
+            {% for review in host_reviews %}
+            <div class="col-md-3">
+              <div class="project img ftco-animate d-flex justify-content-center align-items-center fadeInUp ftco-animated" style="background-image: url(http://image.tmdb.org/t/p/original/{{ review.movie_title.poster_path }});">
+                <div class="overlay"></div>
+                <div class="text text-center p-4">
+                  <img src="" alt="">
+                  <h3><a href="#">{{ review.title }}</a></h3>
+                  <span>{{ review.movie_title }}</span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   {% endwith %}
 {% endblock content %}
+
+{% block script %}
+  <script>
+    const app = new Vue({
+      el: '.app',
+      data: {
+        movies: true,
+        reviews: false,
+      },
+      methods: {
+        switchMovie: function () {
+          const movieBtn = document.querySelector('#movieBtn')
+          const reviewBtn = document.querySelector('#reviewBtn')
+          movieBtn.classList.add('active')
+          reviewBtn.classList.remove('active')
+          this.movies = true
+          this.reviews = false
+        },
+        switchReview: function () {
+          const movieBtn = document.querySelector('#movieBtn')
+          const reviewBtn = document.querySelector('#reviewBtn')
+          movieBtn.classList.remove('active')
+          reviewBtn.classList.add('active')
+          this.movies = false
+          this.reviews = true
+        }
+      },
+    })
+  </script>
+{% endblock script %}

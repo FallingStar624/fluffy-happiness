@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_POST, require_http_methods
 from .forms import CustomUserCreationForm
+from movies.models import CheckTime
+from community.models import Review
+import heapq
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -51,8 +54,23 @@ def logout(request):
 @login_required
 def profile(request, username):
     profile_host = get_object_or_404(get_user_model(), username=username)
+    host_movies = CheckTime.objects.filter(user_id=profile_host.pk)
+    host_reviews = Review.objects.filter(user_id=profile_host.pk)
+    most_genres = {}
+    for movie in host_movies:
+        tmp_genres = movie.movie.genres.all()
+        for genre in tmp_genres:
+            if not most_genres.get(genre.name, 0):
+                most_genres[genre.name] = 1
+            else:
+                most_genres[genre.name] += 1
+    most_genres = heapq.nlargest(3, most_genres, key=most_genres.get)
+
     context = {
         'profile_host': profile_host,
+        'host_movies': host_movies,
+        'host_reviews': host_reviews,
+        'most_genres': most_genres,
     }
     return render(request, 'accounts/profile.html', context)
 

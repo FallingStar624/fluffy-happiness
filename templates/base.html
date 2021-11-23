@@ -20,19 +20,16 @@
     <link rel="stylesheet" href={% static 'css/style.css' %}>
     <link rel="stylesheet" href="{% static 'css/autocomplete-js.dist.style.css' %}"/>
 		
-		<meta name="description" content="Grid Loading and Hover Effect: Recreating Samsung's grid loading effect" />
-		<meta name="keywords" content="grid loading, swipe, effect, slide, masonry, web design, tutorial" />
-		<meta name="author" content="Codrops" />
 		<link rel="shortcut icon" href="../favicon.ico">
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/normalize.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/demo.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'movies/css/component.css' %}" />
+
 		<script src="{% static 'movies/js/modernizr.custom.js' %}"></script>
 
     {% block addcss %}
     {% endblock addcss %}
-  
-    
+
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     {% include '_nav.html' %}
@@ -43,7 +40,6 @@
     {% endblock %}
     <script src="https://kit.fontawesome.com/e87731a046.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
-
     <script src={% static 'js/jquery.min.js' %}></script>
     <script src={% static 'js/jquery-migrate-3.0.1.min.js' %}></script>
     <script src={% static 'js/popper.min.js' %}></script>
@@ -60,7 +56,6 @@
     <!-- Vue CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <!-- container -->
     
     <script src="{% static 'movies/js/masonry.pkgd.min.js' %}"></script>
