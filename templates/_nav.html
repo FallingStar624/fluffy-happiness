@@ -4,7 +4,8 @@
         {% comment %} home 화면으로 가도록 하이퍼링크 {% endcomment %}
         {% if user.is_authenticated %}
         <div>Welcome <a href="{% url 'accounts:profile' user.username %}">{{ user }}</a>!</div>
-				<div class="d-felx">
+
+				<div class="d-flex">
 					<form class="my-auto" action="{% url 'accounts:logout' %}" method="POST" id="logout-form">
 						{% csrf_token %}
 						<a href="#" onclick="document.querySelector('#logout-form').submit()">logout</a>

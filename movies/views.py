@@ -19,7 +19,7 @@ def home(request):
         'movies': movies
     }
 
-    return render(request, 'movies/_grid.html', context)
+    return render(request, 'movies/home.html', context)
 
 
 
@@ -41,7 +41,7 @@ def index(request):
         # 'movies': page_obj
     }
 
-    return render(request, 'movies/index.html', context)
+    return render(request, 'movies/example.html', context)
 
 
 
@@ -99,22 +99,25 @@ def search_movie(request):
 
 
 def create_moviecomment(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    comment_form = MovieCommentForm(request.POST)
-    
-    if comment_form.is_valid():
-        movie_comment = comment_form.save(commit=False)
-        movie_comment.movie = movie
-        movie_comment.user = request.user
-        movie_comment.save()
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        comment_form = MovieCommentForm(request.POST)
+        
+        if comment_form.is_valid():
+            movie_comment = comment_form.save(commit=False)
+            movie_comment.movie = movie
+            movie_comment.user = request.user
+            movie_comment.save()
+            reviewcnt = len(movie.moviecomment_set.all())
+        
+            context = {
+                'username': request.user.username,
+                'moviecontent': movie_comment.content,
+                'reviewcnt': reviewcnt
+            }
+            return JsonResponse(context)
         return redirect('movies:detail', movie.pk)
-    
-    context = {
-        'comment_form': comment_form,
-        'movie': movie,
-        'movie_comments': movie.moviecomment_set.all(),
-    }
-    return render(request, 'movies/detail.html', context)
+    return redirect('accounts:login')
 
 
 

@@ -1,22 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>검색 결과</h1>
-  <form action="" method="POST">
-    {% csrf_token %}
+  <section class="ftco-section ftco-no-pb" id="resume-section">
+    <div class="container">
+      <div class="row justify-content-center pb-5">
+        <div class="col-md-10 heading-section text-center ftco-animate">
+          <h1 class="big big-2">Review</h1>
+          <h2 class="mb-4">Review</h2>
+          {% comment %} <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p> {% endcomment %}
+        </div>
+      </div>
+      {% if not free_reviews %}
+        <h2>검색 결과가 없습니다.</h2>
 
-    {% if not free_reviews %}
-      <h2>검색 결과가 없습니다.</h2>
-
-    {% else %}
-
-      {% for review in free_reviews.all %}
-        <p>{{review.title}}</p>
-
-      {% endfor %}
-    
-    {% endif %}
-  
-  </form>
+      {% else %}
+        <div class="row">
+          {% for review in free_reviews.all %}
+            <div class="col-md-6">
+              <div class="resume-wrap ftco-animate">
+                <span class="date">
+                  {% for j in "x"|rjust:'5' %}
+                    {% if forloop.counter0 < review.rank %}
+                      <span>★</span>
+                    {% else %}
+                      <span>☆</span>
+                    {% endif %}
+                  {% endfor %}
+                </span>
+                <h2>{{ review.title }}</h2>
+                <div>{{ review.user }}</div>
+                <span class="position">{{ review.movie_title }}</span>
+                <p class="mt-4" id="cutcontent">{{ review.content }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>  
+      {% endif %}
+    </div>
+  </section>
 {% endblock content %}
+
 

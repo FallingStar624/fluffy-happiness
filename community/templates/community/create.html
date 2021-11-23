@@ -3,40 +3,44 @@
 
 {% block content %}
   <div class="container">
-  
     <h1>CREATE</h1>
     
-    <form action="" method="POST">
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      <div class="fieldWrapper">
-        {{ form.title.errors }}
-        <label for="id_title">Title : </label>
-        {{ form.title }}
-      </div>
-      <div class="fieldWrapper">
-          {{ form.movie_title.errors }}
-          <label for="id_movie_title">Movie Title : </label>
-          <div style="display: none;">{{ form.movie_title }}</div>
-            <div id="autocomplete" class="autocomplete">
-              <input class="autocomplete-input" name="movie"/>
-              <ul class="autocomplete-result-list"></ul>
+    <div class="row no-gutters block-9">
+      <div class="col-md-6 order-md-last d-flex">
+        <form action="{% url 'community:create' %}" method="POST" class="bg-light p-4 p-md-5 contact-form">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="fieldWrapper">
+            {{ form.title.errors }}
+            <input type="text" class="form-control" placeholder="Your Name" id="id_title">
           </div>
+          <div class="fieldWrapper">
+              {{ form.movie_title.errors }}
+              <div style="display: none;">{{ form.movie_title }}</div>
+                <div id="autocomplete" class="autocomplete">
+                  <input class="autocomplete-input" name="movie" placeholder="Find Movie"/>
+                  <ul class="autocomplete-result-list"></ul>
+              </div>
+          </div>
+          <div class="fieldWrapper">
+              {{ form.rank.errors }}
+              <label for="id_rank">Rank : </label>
+              {{ form.rank }}
+              {% include 'community/star_rate.html' %}
+          </div>
+          <div class="fieldWrapper">
+              {{ form.content.errors }}
+              <textarea name="content" id="id_content" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+          </div>
+          <p><input type="submit" value="Send message" class="btn btn-primary py-3 px-5"/></p>
+        </form>
+        <hr>
       </div>
-      <div class="fieldWrapper">
-          {{ form.rank.errors }}
-          <label for="id_rank">Rank : </label>
-          {{ form.rank }}
-          {% include 'community/star_rate.html' %}
-      </div>
-      <div class="fieldWrapper">
-          {{ form.content.errors }}
-          <label for="id_content">Content : </label>
-          {{ form.content }}
-      </div>
-      <p><input type="submit" value="Send message" /></p>
-    </form>
-    <hr>
+      {% comment %} <div class="col-md-6 d-flex">
+        <div id="selected-poster" class="img" style="background-image: url(images/about.jpg);"></div>
+      </div> {% endcomment %}
+
+    </div>
     <a href="{% url 'community:index' %}">[back]</a>
   </div>
 
@@ -45,6 +49,15 @@
 
 {% block script %}
   <script>
+
+  {% comment %} function selected_poster(path) {
+    const poster = document.querySelector('#selected-poster')
+
+    poster.style = `background-image: url(http://image.tmdb.org/t/p/original/${path});`
+
+  } {% endcomment %}
+
+
 
   function fn_selTest( val )
   {
@@ -92,6 +105,7 @@
       onSubmit : result => {
         console.log(result.title)
         fn_selTest(result.title)
+        selected_poster(result.poster_path)
       }
     })
 
