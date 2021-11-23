@@ -4,6 +4,7 @@
         {% comment %} home 화면으로 가도록 하이퍼링크 {% endcomment %}
         {% if user.is_authenticated %}
         <div>Welcome <a href="{% url 'accounts:profile' user.username %}">{{ user }}</a>!</div>
+
 				<div class="d-flex">
 					<form class="my-auto" action="{% url 'accounts:logout' %}" method="POST" id="logout-form">
 						{% csrf_token %}
@@ -21,7 +22,7 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav" style="flex-grow: 0.5;">
 	        <ul class="navbar-nav nav ml-auto">
 	          <li class="nav-item"><a href="{% url 'movies:home' %}" class="nav-link"><span>Home</span></a></li>
-	          <li class="nav-item"><a href="#" class="nav-link"><span>About</span></a></li>
+	          <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"><span>About</span></a></li>
 	          <li class="nav-item"><a href="{% url 'movies:index' %}" class="nav-link"><span>Movie</span></a></li>
 	          <li class="nav-item"><a href="{% url 'community:index' %}" class="nav-link"><span>Review</span></a></li>
 	        </ul>

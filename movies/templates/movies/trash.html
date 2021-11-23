@@ -48,14 +48,15 @@
           <p class="card-text">[[ movie.fields.title ]]</p>
         </div>
       </div>
-    </div> {% endcomment %}
+    </div>
 
-  {% comment %} </div> {% endcomment %}
-    
-    <section class="grid-wrap">
-      <ul class="grid swipe-down" id="grid">
-        <li class="title-box">
-          <h2>Illustrations</h2>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <button type="button" class="page-link" v-if="page != 1" @click="page--"> Previous </button>
+        </li>
+        <li class="page-item">
+          <button type="button" class="page-link" v-for="pageNumber in pages.slice(page-1, page+5)" @click="page = pageNumber"> [[pageNumber]] </button>
         </li>
         <li v-for="movie in movieListByGenre" :key="movie.pk">
           <a href="#">

@@ -39,7 +39,8 @@
 
 
 {% block content %}
-  <div id="app" class="mt-3 container">
+<div class="container" id="app">
+  <div class="mt-3">
     <span id="autocomplete" class="autocomplete">
       <input class="autocomplete-input" name="movie"/>
       <ul class="autocomplete-result-list"></ul>
@@ -96,6 +97,45 @@
 
   {% block script %}
   <script>
+
+
+
+    
+    /* {let pageNum = 2
+
+    document.addEventListener('scroll', (event) => {
+    const {scrollHeight, scrollTop, clientHeight} = document.body
+    console.log(scrollHeight - Math.round(scrollTop))
+    console.log(clientHeight-1)
+
+      if (scrollHeight - Math.round(scrollTop) === clientHeight - 1) {
+        axios({
+        method: 'get',
+        url: `/movies/?page=${pageNum}`,
+        headers: {'x-requested-with': 'XMLHttpRequest'}
+        })
+          .then((res) => {
+            const movies = res.data
+            
+            movies.forEach((movie) => {
+              const movieList = document.querySelector('.movie-list')
+              const movieDiv = document.createElement('div')
+
+              const movieHTML = `
+                <h3>${ movie.fields.title }</h3>
+                <p>${ movie.fields.overview }</p>
+                <a href="movies/${ movie.pk }/">[detail]</a>
+                <hr>
+              `
+              movieDiv.innerHTML = movieHTML
+              movieList.appendChild(movieDiv)
+            })
+            pageNum += 1
+          })
+      
+      }
+    }) }*/
+  
     const app = new Vue({
       delimiters: ['[[', ']]'],
       el: '#app',
@@ -223,4 +263,3 @@
 
   </script>
 {% endblock script %}
-
