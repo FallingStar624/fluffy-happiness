@@ -19,9 +19,9 @@
             <h2 class="mb-4">{{ profile_host }}</h2>
             <div class="d-flex justify-content-between">
               <p class="placeholder-wave text-dark font-weight-bold">
-                <span class="placeholder px-3" style="color: #ffc107;">#action</span>
-                <span class="placeholder px-3" style="color: #ffc107;">#S/F</span>
-                <span class="placeholder px-3" style="color: #ffc107;">#Fantasy</span>
+                {% for genre in most_genres %}
+                  <span class="placeholder px-3" style="color: #ffc107;">#{{ genre }}</span>
+                {% endfor %}
               </p>
             </div>
             <ul class="about-info mt-4 px-md-0 px-2">
