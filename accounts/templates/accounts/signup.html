@@ -1,21 +1,32 @@
 {% extends 'base.html' %}
-
 {% block content %}
   <div class="container">
-    {% if user.is_authenticated %}
-      <h1 class="navbar-brand">Already logined</h1>
-    {% else %}
-      <h1 class="navbar-brand">Sign Up</h1>
-      <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% comment %} <p>ID: {{ form.username }}</p>
-        <p>PW: {{ form.password1 }}</p>
-        <p>PW_check: {{ form.password2 }}</p>
-        <p>E-mail: {{ form.email }}</p>
-        <p>Profile Image: {{ form.profileimage }}</p> {% endcomment %}
-        {{ form.as_p }}
-        <input type="submit">
-      </form>
-    {% endif %}
+    <div class="d-flex">
+      <div class="col-md-6 col-lg-7 pl-lg-5 pb-5">
+        <div class="row justify-content-start pb-3">
+          <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+            <div class="col-6 ml-auto mt-5">
+              <h2 class="mb-4">Signup</h2>
+              <p>가입정보를 입력해주세요</p>
+              <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <ul class="about-info mt-4 px-md-0 px-2">
+                  <li class="d-flex"><span>ID:</span></li>
+                  <li class="d-flex">{{ form.username }}</li>
+                  <li class="d-flex"><span>PW:</span></li>
+                  <li class="d-flex">{{ form.password1 }}</li>
+                  <li class="d-flex"><span>PW CHECK:</span></li>
+                  <li class="d-flex">{{ form.password2 }}</li>
+                  <li class="d-flex"><span>E-mail:</span></li>
+                  <li class="d-flex">{{ form.email }}</li>
+                  <li class="d-flex"><span>PROFILE IMAGE:</span></li>
+                  <li class="d-flex btn btn-outline-light btn-sm">{{ form.image }}</li>
+                </ul>
+                <input class="btn btn-outline-warning" style="float: right;" type="submit">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 {% endblock content %}
