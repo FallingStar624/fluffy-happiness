@@ -1,6 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block addcss %}
+  <style>
+    button.page-link {
+      display: inline-block;
+    }
+    button.page-link {
+        font-size: 20px;
+        color: #29b3ed;
+        font-weight: 500;
+    }
+    .offset{
+      width: 500px !important;
+      margin: 20px auto;  
+    }
+
+    .unknown {
+      padding-top: calc(100%/16 * 4);
+      padding-bottom: calc(100%/16 * 4);
+    }
+
+    #app > nav > ul > li > button {
+      background-color: black;
+      border-color: #999999;
+      border-width: medium;
+      color: hsl(40, 90%, 60%);
+    }
+
+    button.page-link {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  </style>
+{% endblock addcss %}
+
+
+
+
 {% block content %}
 <div class="container" id="app">
   <div class="mt-3">
@@ -26,97 +63,39 @@
     </select>
     <span>이상</span>
 
-    
-    
-    {% comment %} <div class="container">
-      <section class="grid-wrap">
-        <ul class="grid swipe-down" id="grid">
-          <li class="title-box">
-            <h2>Illustrations</h2>
-          </li>
-          <li>
-            dfdf
-          </li>
-        </ul>
-      </section>
-    </div> {% endcomment %}
 
-{% comment %} 
     <div class="row mt-3">
-      <div class="card col-3" style="width: 18rem;" v-for="movie in movieListByGenre" :key="movie.pk">
-        <img :src="`http://image.tmdb.org/t/p/original/${movie.fields.poster_path}`" class="card-img-top" alt="포스터가 없습니다.">
+      <div class="card col-3" style="width: 18rem; background-color: hsl(75, 3%, 3%);" v-for="movie in displayedPosts" :key="movie.pk">
+        <a :href="`/movies/${movie.pk}/`">
+          <img v-if="movie.fields.poster_path" :src="`http://image.tmdb.org/t/p/original/${movie.fields.poster_path}`" class="card-img-top" alt="">
+          <img v-else src="https://wrenchway.com/wp-content/uploads/2021/08/not-allowed.png" class="card-img-top unknown" alt="null입니다.">
+        </a>
         <div class="card-body">
-          <p class="card-text">[[ movie.fields.title ]]</p>
+          <p class="card-text" style="font-family:'Black Han Sans', sans-serif; font-weight: bold; text-align: center;">[[ movie.fields.title ]]</p>
         </div>
       </div>
-    </div> {% endcomment %}
+    </div>
 
-  {% comment %} </div> {% endcomment %}
-    <section class="grid-wrap">
-      <ul class="grid swipe-down" id="grid">
-        <li class="title-box">
-          <h2>Illustrations</h2>
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-2 secondary">
+      <ul class="pagination">
+        <li class="page-item">
+          <button type="button" class="page-link" v-if="page != 1" @click="page--"> « </button>
         </li>
-        <li v-for="movie in movieListByGenre" :key="movie.pk">
-          <a href="#">
-            <img :src="`http://image.tmdb.org/t/p/original/${movie.fields.poster_path}`" alt="dummy" width="200px">
-            <h3>[[ movie.fields.title ]]</h3>
-          </a>
+        <li class="page-item">
+          <button type="button" class="page-link" v-for="pageNumber in pages.slice(page-1, page+2)" @click="page = pageNumber"> [[pageNumber]] </button>
+        </li>
+        <li class="page-item">
+          <button type="button" @click="page++" v-if="page < pages.length" class="page-link"> » </button>
         </li>
       </ul>
-    </section>
+    </nav>	
 
   </div>
-{% comment %} 
-    <section class="grid-wrap">
-      <ul class="grid swipe-down" id="grid">
-        <li class="title-box">
-          <h2>Illustrations</h2>
-        </li>
-        <li>
-          <a href="#">
-            <img src="{% static 'movies/img/dummy.png' %}" alt="dummy">
-            <h3>check</h3>
-          </a>
-        </li>
-          <li>
-          <a href="#">
-            <img src="{% static 'movies/img/dummy.png' %}" alt="dummy">
-            <h3>check</h3>
-          </a>
-        </li>
-          <li>
-          <a href="#">
-            <img src="{% static 'movies/img/dummy.png' %}" alt="dummy">
-            <h3>check</h3>
-          </a>
-        </li>
-      </ul>
-    </section>
-   {% endcomment %}
 
-{% endblock %}
+  {% endblock %}
 
 
-{% block script %}
-
-  {% comment %} <script>
-    const grid = document.querySelector("#grid")
-    const item = `
-          <a href="#">
-            <img src="/staticfiles/movies/img/dummy.png" alt="dummy">
-            <h3>check</h3>
-          </a>
-        `
-    for (i=0; i < 50; i++ ) {
-      const li = document.createElement("li")
-      li.innerHTML = item
-      grid.appendChild(li)
-    }
-
-
-  </script> {% endcomment %}
-  
+  {% block script %}
   <script>
 
 
@@ -166,7 +145,9 @@
         genres: [],
         genreStatus: 'all',
         voteAverage: '0',
-        sample: [1, 2, 3],
+        page: 1,
+        perPage: 8,
+        pages: [],	
       },
       methods: {
         movieList: function () {
@@ -181,6 +162,19 @@
             }
           }
           
+        },
+        setPages () {
+          let numberOfPages = Math.ceil(this.movies.length / this.perPage);
+          for (let index = 1; index <= numberOfPages; index++) {
+            this.pages.push(index);
+          }
+        },
+        paginate (movies) {
+          let page = this.page;
+          let perPage = this.perPage;
+          let from = (page * perPage) - perPage;
+          let to = (page * perPage);
+          return  movies.slice(from, to);
         }
       },
       created: function () {
@@ -193,252 +187,6 @@
           .then((res) => {
             this.genres = res.data
           })
-      },
-      beforeUpdate: function () {
-                /**
-        * gridScrollFx.js v1.0.0
-        * http://www.codrops.com
-        *
-        * Licensed under the MIT license.
-        * http://www.opensource.org/licenses/mit-license.php
-        * 
-        * Copyright 2013, Codrops
-        * http://www.codrops.com
-        */
-        ;( function( window ) {
-          
-          'use strict';
-          
-          var docElem = window.document.documentElement,
-            support = { animations : Modernizr.cssanimations },
-            animEndEventNames = {
-              'WebkitAnimation' : 'webkitAnimationEnd',
-              'OAnimation' : 'oAnimationEnd',
-              'msAnimation' : 'MSAnimationEnd',
-              'animation' : 'animationend'
-            },
-            // animation end event name
-            animEndEventName = animEndEventNames[ Modernizr.prefixed( 'animation' ) ];
-
-          function getViewportH() {
-            var client = docElem['clientHeight'],
-              inner = window['innerHeight'];
-            
-            if( client < inner )
-              return inner;
-            else
-              return client;
-          }
-
-          function scrollY() {
-            return window.pageYOffset || docElem.scrollTop;
-          }
-
-          // http://stackoverflow.com/a/5598797/989439
-          function getOffset( el ) {
-            var offsetTop = 0, offsetLeft = 0;
-            do {
-              if ( !isNaN( el.offsetTop ) ) {
-                offsetTop += el.offsetTop;
-              }
-              if ( !isNaN( el.offsetLeft ) ) {
-                offsetLeft += el.offsetLeft;
-              }
-            } while( el = el.offsetParent )
-
-            return {
-              top : offsetTop,
-              left : offsetLeft
-            }
-          }
-
-          function inViewport( el, h ) {
-            var elH = el.offsetHeight,
-              scrolled = scrollY(),
-              viewed = scrolled + getViewportH(),
-              elTop = getOffset(el).top,
-              elBottom = elTop + elH,
-              // if 0, the element is considered in the viewport as soon as it enters.
-              // if 1, the element is considered in the viewport only when it's fully inside
-              // value in percentage (1 >= h >= 0)
-              h = h || 0;
-
-            return (elTop + elH * h) <= viewed && (elBottom - elH * h) >= scrolled;
-          }
-
-          function extend( a, b ) {
-            for( var key in b ) { 
-              if( b.hasOwnProperty( key ) ) {
-                a[key] = b[key];
-              }
-            }
-            return a;
-          }
-
-          function GridItem( el ) {
-            this.el = el;
-            this.anchor = el.querySelector( 'a' ) 
-            this.image = el.querySelector( 'img' );
-            this.desc = el.querySelector( 'h3' );
-          }
-
-          GridItem.prototype.addCurtain = function() {
-            if( !this.image ) return;
-            this.curtain = document.createElement( 'div' );
-            this.curtain.className = 'curtain';
-            var rgb = new ColorFinder( function favorHue(r,g,b) {
-              // exclude white
-              //if (r>245 && g>245 && b>245) return 0;
-              return (Math.abs(r-g)*Math.abs(r-g) + Math.abs(r-b)*Math.abs(r-b) + Math.abs(g-b)*Math.abs(g-b))/65535*50+1;
-            } ).getMostProminentColor( this.image );
-            if( rgb.r && rgb.g && rgb.b ) {
-              this.curtain.style.background = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
-            }
-            this.anchor.appendChild( this.curtain );
-          }
-
-          GridItem.prototype.changeAnimationDelay = function( time ) {
-            if( this.curtain ) {
-              this.curtain.style.WebkitAnimationDelay = time + 'ms';
-              this.curtain.style.animationDelay = time + 'ms';
-            }
-            if( this.image ) {
-              this.image.style.WebkitAnimationDelay = time + 'ms';
-              this.image.style.animationDelay = time + 'ms';
-            }
-            if( this.desc ) {
-              this.desc.style.WebkitAnimationDelay = time + 'ms';
-              this.desc.style.animationDelay = time + 'ms';
-            }
-          }
-
-          function GridScrollFx( el, options ) {	
-            this.el = el;
-            this.options = extend( {}, this.options );
-            extend( this.options, options );
-            this._init();
-          }
-
-          GridScrollFx.prototype.options = {
-            // Minimum and maximum delay of the animation (random value is chosen)
-            minDelay : 0,
-            maxDelay : 500,
-            // The viewportFactor defines how much of the appearing item has to be visible in order for the animation to start
-            // if we'd use a value of 0, this would mean that it would add the animation class as soon as the item is in the viewport. 
-            // If we were to use the value of 1, the animation would only be triggered when we see all of the item in the viewport (100% of it)
-            viewportFactor : 0
-          }
-
-          GridScrollFx.prototype._init = function() {
-            var self = this, items = [];
-
-            [].slice.call( this.el.children ).forEach( function( el, i ) {
-              var item = new GridItem( el );
-              items.push( item );
-            } );
-
-            this.items = items;
-            this.itemsCount = this.items.length;
-            this.itemsRenderedCount = 0;
-            this.didScroll = false;
-
-            imagesLoaded( this.el, function() {
-              // show grid
-              classie.add( self.el, 'loaded' );
-
-              // initialize masonry
-              new Masonry( self.el, {
-                itemSelector : 'li',
-                isFitWidth : true,
-                transitionDuration : 0
-              } );
-              
-              // the items already shown...
-              self.items.forEach( function( item ) {
-                if( inViewport( item.el ) ) {
-                  ++self.itemsRenderedCount;
-                  classie.add( item.el, 'shown' );
-                }
-                else {
-                  item.addCurtain();
-                  // add random delay
-                  item.changeAnimationDelay( Math.random() * ( self.options.maxDelay - self.options.minDelay ) + self.options.minDelay );
-                }
-              } );
-
-              var onScrollFn = function() {
-                if( !self.didScroll ) {
-                  self.didScroll = true;
-                  setTimeout( function() { self._scrollPage(); }, 200 );
-                }
-                
-                if( self.itemsRenderedCount === self.itemsCount ) {
-                  window.removeEventListener( 'scroll', onScrollFn, false );
-                }
-              }
-
-              // animate the items inside the viewport (on scroll)
-              window.addEventListener( 'scroll', onScrollFn, false );
-              // check if new items are in the viewport after a resize
-              window.addEventListener( 'resize', function() { self._resizeHandler(); }, false );
-            });
-          }
-
-          GridScrollFx.prototype._scrollPage = function() {
-            var self = this;
-            this.items.forEach( function( item ) {
-              if( !classie.has( item.el, 'shown' ) && !classie.has( item.el, 'animate' ) && inViewport( item.el, self.options.viewportFactor ) ) {
-                ++self.itemsRenderedCount;
-
-                if( !item.curtain ) {
-                  classie.add( item.el, 'shown' );
-                  return;
-                };
-
-                classie.add( item.el, 'animate' );
-                
-                // after animation ends add class shown
-                var onEndAnimationFn = function( ev ) {
-                  if( support.animations ) {
-                    this.removeEventListener( animEndEventName, onEndAnimationFn );
-                  }
-                  classie.remove( item.el, 'animate' );
-                  classie.add( item.el, 'shown' );
-                };
-
-                if( support.animations ) {
-                  item.curtain.addEventListener( animEndEventName, onEndAnimationFn );
-                }
-                else {
-                  onEndAnimationFn();
-                }
-              }
-            });
-            this.didScroll = false;
-          }
-
-          GridScrollFx.prototype._resizeHandler = function() {
-            var self = this;
-            function delayed() {
-              self._scrollPage();
-              self.resizeTimeout = null;
-            }
-            if ( this.resizeTimeout ) {
-              clearTimeout( this.resizeTimeout );
-            }
-            this.resizeTimeout = setTimeout( delayed, 1000 );
-          }
-
-          // add to global namespace
-          window.GridScrollFx = GridScrollFx;
-
-        } )( window );
-        
-      },
-      updated: function () {
-        new GridScrollFx( document.getElementById( 'grid' ), {
-          viewportFactor : 0.4
-        } );
       },
       computed: {
         movieListByGenre: function () {
@@ -455,8 +203,22 @@
               return movie.fields.vote_average > this.voteAverage
             })
           }
+        },
+        displayedPosts () {
+          return this.paginate(this.movieListByGenre);
         }
       },
+      watch: {
+        movies () {
+          this.setPages();
+        }
+      },
+      filters: {
+        trimWords(value){
+          return value.split(" ").splice(0,20).join(" ") + '...';
+        }
+      }
+
     })
 
     function saveMoviePK(val) {
