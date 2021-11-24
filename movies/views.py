@@ -1,19 +1,18 @@
-import json
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Movie, Genre, MovieComment
+from .models import Movie, Genre
 from django.core import serializers
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from django.http.response import JsonResponse
-from django.core.paginator import Paginator
 from .forms import MovieCommentForm
-from community.models import Review
 from django.contrib.auth import get_user
-
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.contrib.auth.decorators import login_required
 
 
 
 # Create your views here.
+@require_GET
 def home(request):
     if request.user.is_authenticated:
         user = get_user(request)
@@ -34,7 +33,7 @@ def home(request):
     return render(request, 'movies/home.html', context)
 
 
-
+@require_GET
 def index(request):
     genres = Genre.objects.all()
 
@@ -45,7 +44,7 @@ def index(request):
     return render(request, 'movies/index.html', context)
 
 
-
+@require_GET
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     movie_comments = movie.moviecomment_set.all()
@@ -98,7 +97,7 @@ def search_movie(request):
 
 
 
-
+@login_required
 def create_moviecomment(request, movie_pk):
     if request.user.is_authenticated:
         movie = get_object_or_404(Movie, pk=movie_pk)
@@ -121,7 +120,8 @@ def create_moviecomment(request, movie_pk):
     return redirect('accounts:login')
 
 
-
+@require_POST
+@login_required
 def watch(request, movie_pk):
     if request.user.is_authenticated:
         movie = get_object_or_404(Movie, pk=movie_pk)
