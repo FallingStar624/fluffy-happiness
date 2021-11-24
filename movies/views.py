@@ -15,7 +15,7 @@ from django.contrib.auth import get_user
 
 # Create your views here.
 def home(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = get_user(request)
         watch_movie = user.watch_movies.all().order_by('-checktime').first()
         
