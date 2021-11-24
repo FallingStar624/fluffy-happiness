@@ -15,13 +15,17 @@ from django.contrib.auth import get_user
 
 # Create your views here.
 def home(request):
-    user = get_user(request)
-    watch_movie = user.watch_movies.all().order_by('-checktime').first()
-    
-    if watch_movie == None:
-        movies = []
+    if request.user.is_authenticated():
+        user = get_user(request)
+        watch_movie = user.watch_movies.all().order_by('-checktime').first()
+        
+        if watch_movie == None:
+            movies = []
+        else:
+            movies = watch_movie.recommend.all()
+
     else:
-        movies = watch_movie.recommend.all()
+        movies = []
 
     context = {
         'movies': movies,
