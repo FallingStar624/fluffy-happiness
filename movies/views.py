@@ -8,13 +8,20 @@ from django.http.response import JsonResponse
 from django.core.paginator import Paginator
 from .forms import MovieCommentForm
 from community.models import Review
+from django.contrib.auth import get_user
 
 
 
 
 # Create your views here.
 def home(request):
-    movies = Movie.objects.all()
+    user = get_user(request)
+    watch_movie = user.watch_movies.all().order_by('-checktime').first()
+    
+    if watch_movie == None:
+        movies = []
+    else:
+        movies = watch_movie.recommend.all()
 
     context = {
         'movies': movies,

@@ -17,13 +17,13 @@
             {{ form.non_field_errors }}
             <div class="fieldWrapper form-group">
               {{ form.title.errors }}
-              <input type="text" class="form-control" placeholder="Title" required_id="id_title" name="title">
+              <input type="text" class="form-control" placeholder="Title" required_id="id_title" name="title" value="{{ review.title }}">
             </div>
             <div class="fieldWrapper form-group">
                 {{ form.movie_title.errors }}
                 <div style="display: none;">{{ form.movie_title }}</div>
                   <div id="autocomplete" class="autocomplete">
-                    <input class="autocomplete-input" name="movie" placeholder="Find Movie" style="width: 100%;"/>
+                    <input class="autocomplete-input" name="movie" placeholder="Find Movie" style="width: 100%;" value="{{ review.movie_title }}"/>
                     <ul class="autocomplete-result-list" style="width: 100%;"></ul>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="fieldWrapper form-group">
                 {{ form.content.errors }}
-                <textarea name="content" id="id_content" cols="30" rows="7" class="form-control" placeholder="Content"></textarea>
+                <textarea name="content" id="id_content" cols="30" rows="7" class="form-control" placeholder="Content" value="">{{ review.content }}</textarea>
             </div>
             
             <div class="form-group">
@@ -43,10 +43,9 @@
             </div>
           </form>
           <hr>
-        </div>
-        
+        </div>        
         <div class="col-md-6 d-flex">
-          <div id="selected-poster" class="img" style=""></div>
+          <div id="selected-poster" class="img" style="background-image: url('http://image.tmdb.org/t/p/original{{review.movie_title.poster_path}}'); background-size: contain;"></div>
         </div>
 
       </div>
@@ -89,7 +88,7 @@
       search : input => {
         const url = `/community/search-movie/?movie=${input}`
         return new Promise(resolve => {
-          if (input.length < 3) {
+          if (input.length < 2) {
             return resolve([])
           }
           fetch(url)

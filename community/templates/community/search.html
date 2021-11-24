@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 
+{% block script %}
+  <style>
+    #cutcontent {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      /* 여러 줄 자르기 추가 스타일 */ 
+      white-space: normal; 
+      line-height: 1.2; 
+      height: 3.6em; 
+      word-wrap: break-word; 
+      display: -webkit-box; 
+      -webkit-line-clamp: 3; 
+      -webkit-box-orient: vertical;
+    }
+  </style>
+
+{% endblock script %}
+
+
 {% block content %}
   <section class="ftco-section ftco-no-pb" id="resume-section">
     <div class="container">
       <div class="row justify-content-center pb-5">
         <div class="col-md-10 heading-section text-center ftco-animate">
-          <h1 class="big big-2">Review</h1>
-          <h2 class="mb-4">Review</h2>
+          <h1 class="big big-2">Result</h1>
+          <h2 class="mb-4">Result</h2>
           {% comment %} <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p> {% endcomment %}
         </div>
       </div>
@@ -27,9 +48,9 @@
                     {% endif %}
                   {% endfor %}
                 </span>
-                <h2>{{ review.title }}</h2>
-                <div>{{ review.user }}</div>
-                <span class="position">{{ review.movie_title }}</span>
+                <a href="{% url 'community:detail' review.pk %}"><h2>{{ review.title }}</h2></a>
+                <div><a href="{% url 'accounts:profile' review.user %}" style="color: white;">{{ review.user }}</a></div>
+                <span class="position"><a href="{% url 'community:detail' review.pk %}" style="color: white;">{{ review.movie_title }}</a></span>
                 <p class="mt-4" id="cutcontent">{{ review.content }}</p>
               </div>
             </div>
@@ -38,6 +59,18 @@
       {% endif %}
     </div>
   </section>
+
+
+  <div class="container d-flex justify-content-between pb-2">
+    <form class="my-auto" action="{% url 'community:search' %}" method="POST">
+      {% csrf_token %}
+      <input type="search" placeholder="검색어를 입력해주세요." aria-label="Search" name="review", value="{{review}}">
+      <button type="submit" class="btn btn-white btn-outline-white">검색</button>
+    </form>
+    <form action="{% url 'community:create' %}">
+      <button id="write-comment" class="btn btn-primary my-auto">작성</button>
+    </form>
+  </div>
 {% endblock content %}
 
 
