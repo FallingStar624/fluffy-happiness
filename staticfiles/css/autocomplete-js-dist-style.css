@@ -50,7 +50,7 @@
   background:#fff;
   list-style:none;
   box-shadow:0 2px 2px rgba(0,0,0,.16);
-  width: 50% !important;
+  width: 100%;
 }
 
 [data-position=below] .autocomplete-result-list{
@@ -72,7 +72,8 @@
   padding:12px 12px 12px 48px;
   background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2NjIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Ik0yMSAyMWwtNC00Ii8+PC9zdmc+");
   background-repeat:no-repeat;
-  background-position:12px
+  background-position:12px;
+
 }
 
 .autocomplete-result:hover,.autocomplete-result[aria-selected=true]{

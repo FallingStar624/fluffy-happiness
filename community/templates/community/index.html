@@ -18,6 +18,13 @@
       -webkit-line-clamp: 3; 
       -webkit-box-orient: vertical;
     }
+
+    #pagenation > ul > li > a {
+      background-color: black;
+      border-color: #999999;
+      border-width: medium;
+      color: hsl(40, 90%, 60%);
+    }
   
   </style>
 
@@ -25,11 +32,9 @@
 
 
 {% block content %}
-  <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
-
   {% include 'community/_card.html' %}
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center" id="pagenation">
       {% bootstrap_pagination reviews %}
   </div>
   <div class="container d-flex justify-content-between pb-2">
@@ -38,6 +43,8 @@
       <input type="search" placeholder="검색어를 입력해주세요." aria-label="Search" name="review", value="{{review}}">
       <button type="submit" class="btn btn-white btn-outline-white">검색</button>
     </form>
-    <button class="btn btn-primary my-auto">작성</button>
+    <form action="{% url 'community:create' %}">
+      <button id="write-comment" class="btn btn-primary my-auto">작성</button>
+    </form>
   </div>
 {% endblock content %}

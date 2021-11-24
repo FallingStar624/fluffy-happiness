@@ -49,7 +49,7 @@
   background:#fff;
   list-style:none;
   box-shadow:0 2px 2px rgba(0,0,0,.16);
-  width: 50%;
+  width: 100%;
 }
 
 [data-position=below] .autocomplete-result-list{

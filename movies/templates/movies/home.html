@@ -1,1 +1,77 @@
 {% extends 'base.html' %}
+
+{% block addcss %}
+  <style>
+    .target {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      /* 여러 줄 자르기 추가 스타일 */ 
+      white-space: normal; 
+      line-height: 1.2; 
+      height: 3.6em; 
+      text-align: left; 
+      word-wrap: break-word; 
+      display: -webkit-box; 
+      -webkit-line-clamp: 3; 
+      -webkit-box-orient: vertical; }
+  </style>
+
+{% endblock addcss %}
+
+{% block content %}
+	<section id="home-section" class="hero">
+		<div class="home-slider  owl-carousel">
+			{% if movies %}
+				{% for movie in movies %}
+					<div class="slider-item ">
+						<div class="overlay"></div>
+						<div class="container">
+							<div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+								<div class="one-third js-fullheight order-md-last img col-6" style="background-image:url('http://image.tmdb.org/t/p/original/{{ movie.poster_path }}');">
+									<div class="overlay"></div>
+								</div>
+								<div class="one-forth d-flex  align-items-center ftco-animate col-6" data-scrollax=" properties: { translateY: '70%' }">
+									<div class="text">
+										{% for genre in movie.genres.all %}
+											<span class="subheading" style="font-size: 115%;">#{{ genre.name }}</span>
+										{% endfor %}
+										<h1 class="mb-4 mt-3" style="text-align: conter;">{{ movie.title }}</h1>
+										<h2 class="mb-4" style="color: #ffbd39;">★ {{ movie.vote_average }}</h2>
+										{% if movie.overview == "nan" %}
+											<span class="mb-4 target"></span>
+										{% else %}
+											<span class="mb-4 target">{{ movie.overview }}</span>
+										{% endif %}
+										<p><a href="{% url 'movies:detail' movie.pk %}" class="btn btn-white btn-outline-white py-3 px-4">more</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="slider-item">
+	      	<div class="overlay"></div>
+	        <div class="container">
+	          <div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+	          	<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/bg_1.png);">
+	          		<div class="overlay"></div>
+	          	</div>
+		          <div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+		          	<div class="text">
+		          		<span class="subheading">Sorry!</span>
+			            <h1 class="mb-4 mt-3">Your <span>Movie List</span></h1>
+			            <h1 class="mb-4">Is Empty</h1>
+			            <p><a href="{% url 'movies:index' %}" class="btn btn-primary py-3 px-4">Go To Add Movies</a></p>
+		            </div>
+		          </div>
+	        	</div>
+	        </div>
+	      </div>
+			{% endif %}
+		</div>
+	</section>
+{% endblock content %}
+

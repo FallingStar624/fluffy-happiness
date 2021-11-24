@@ -3,44 +3,53 @@
 
 {% block content %}
   <div class="container">
-    <h1>CREATE</h1>
-    
-    <div class="row no-gutters block-9">
-      <div class="col-md-6 order-md-last d-flex">
-        <form action="{% url 'community:create' %}" method="POST" class="bg-light p-4 p-md-5 contact-form">
-          {% csrf_token %}
-          {{ form.non_field_errors }}
-          <div class="fieldWrapper">
-            {{ form.title.errors }}
-            <input type="text" class="form-control" placeholder="Your Name" id="id_title">
-          </div>
-          <div class="fieldWrapper">
-              {{ form.movie_title.errors }}
-              <div style="display: none;">{{ form.movie_title }}</div>
-                <div id="autocomplete" class="autocomplete">
-                  <input class="autocomplete-input" name="movie" placeholder="Find Movie"/>
-                  <ul class="autocomplete-result-list"></ul>
-              </div>
-          </div>
-          <div class="fieldWrapper">
-              {{ form.rank.errors }}
-              <label for="id_rank">Rank : </label>
-              {{ form.rank }}
-              {% include 'community/star_rate.html' %}
-          </div>
-          <div class="fieldWrapper">
-              {{ form.content.errors }}
-              <textarea name="content" id="id_content" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
-          </div>
-          <p><input type="submit" value="Send message" class="btn btn-primary py-3 px-5"/></p>
-        </form>
-        <hr>
-      </div>
-      {% comment %} <div class="col-md-6 d-flex">
-        <div id="selected-poster" class="img" style="background-image: url(images/about.jpg);"></div>
-      </div> {% endcomment %}
+    <section class="ftco-section contact-section ftco-no-pb" id="contact-section">
+      {% if request.resolver_match.url_name == 'create' %}
+        <h1>CREATE</h1>
+      {% elif request.resolver_match.url_name == 'update' %}
+        <h1>UPDATE</h1>
+      {% endif %}
+      
+      <div class="row no-gutters block-9">
+        <div class="col-md-6 order-md-last d-flex">
+          <form action="" method="POST" class="bg-light p-4 p-md-5 contact-form mb-0">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper form-group">
+              {{ form.title.errors }}
+              <input type="text" class="form-control" placeholder="Title" required_id="id_title" name="title" value="{{ review.title }}">
+            </div>
+            <div class="fieldWrapper form-group">
+                {{ form.movie_title.errors }}
+                <div style="display: none;">{{ form.movie_title }}</div>
+                  <div id="autocomplete" class="autocomplete">
+                    <input class="autocomplete-input" name="movie" placeholder="Find Movie" style="width: 100%;" value="{{ review.movie_title }}"/>
+                    <ul class="autocomplete-result-list" style="width: 100%;"></ul>
+                </div>
+            </div>
+            <div class="fieldWrapper form-group">
+                {{ form.rank.errors }}
+                <label for="id_rank">Rank : </label>
+                {{ form.rank }}
+                {% include 'community/star_rate.html' %}
+            </div>
+            <div class="fieldWrapper form-group">
+                {{ form.content.errors }}
+                <textarea name="content" id="id_content" cols="30" rows="7" class="form-control" placeholder="Content" value="">{{ review.content }}</textarea>
+            </div>
+            
+            <div class="form-group">
+              <p><input type="submit" value="Send Review" class="btn btn-primary py-3 px-5"/></p>
+            </div>
+          </form>
+          <hr>
+        </div>        
+        <div class="col-md-6 d-flex">
+          <div id="selected-poster" class="img" style="background-image: url('http://image.tmdb.org/t/p/original{{review.movie_title.poster_path}}'); background-size: contain;"></div>
+        </div>
 
-    </div>
+      </div>
+    </section>
     <a href="{% url 'community:index' %}">[back]</a>
   </div>
 
@@ -50,12 +59,12 @@
 {% block script %}
   <script>
 
-  {% comment %} function selected_poster(path) {
+  function selected_poster(path) {
     const poster = document.querySelector('#selected-poster')
 
-    poster.style = `background-image: url(http://image.tmdb.org/t/p/original/${path});`
+    poster.style = `background-image: url("http://image.tmdb.org/t/p/original${path}"); background-size: contain;`
 
-  } {% endcomment %}
+  }
 
 
 
@@ -79,7 +88,7 @@
       search : input => {
         const url = `/community/search-movie/?movie=${input}`
         return new Promise(resolve => {
-          if (input.length < 3) {
+          if (input.length < 2) {
             return resolve([])
           }
           fetch(url)
