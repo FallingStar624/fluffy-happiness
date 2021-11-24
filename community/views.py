@@ -7,10 +7,12 @@ from django.core import serializers
 from django.forms.models import model_to_dict
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@require_GET
 def index(request):
     reviews = Review.objects.all()
     paginator = Paginator(reviews, 10)
@@ -24,6 +26,8 @@ def index(request):
 
     return render(request, 'community/index.html', context)
 
+@require_http_methods(['GET', 'POST'])
+@login_required
 def create(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -41,6 +45,8 @@ def create(request):
     }
     return render(request, 'community/create.html', context)
 
+
+@require_GET
 def detail(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     comments = review.reviewcomment_set.all()
@@ -54,6 +60,8 @@ def detail(request, review_pk):
     return render(request, 'community/detail.html', context)
 
 
+@require_http_methods(['GET', 'POST'])
+@login_required
 def update(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     
@@ -69,11 +77,14 @@ def update(request, review_pk):
         form = ReviewForm(instance=review)
 
     context = {
-        'form': form
+        'form': form,
+        'review': review
     }
 
     return render(request, 'community/create.html', context)
 
+
+@require_POST
 def delete(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     review.delete()
@@ -81,6 +92,8 @@ def delete(request, review_pk):
     return redirect('community:index')
 
 
+@require_POST
+@login_required
 def create_comment(request, review_pk):
     if request.user.is_authenticated:
         review = get_object_or_404(Review, pk=review_pk)
@@ -102,6 +115,8 @@ def create_comment(request, review_pk):
     return redirect('accounts:login')
 
 
+@require_POST
+@login_required
 def like(request, review_pk):
     if request.user.is_authenticated:
         review = get_object_or_404(Review, pk=review_pk)

@@ -20,46 +20,43 @@
         {% endif %}
       <span id="watch-count-{{ movie.pk }}">{{ movie.watch_users.all|length }}</span>명이 시청
     </div>
-    
-    <div class="tab-pane fade show active" id="user_movies">
-      <div class="row mt-5">
-        {% comment %} {% for recommend in movie.recommend %} {% endcomment %}
+    <div class="tab-pane fade show active row" id="user_movies">
+      <div class="row mt-5 col-md-6">
+        {% for recommend in movie.recommend.all %}
           <div class="col-md-6">
-            <div class="project img ftco-animate d-flex justify-content-center align-items-center fadeInUp ftco-animated" style="background-image: url();">
+            <div class="project img ftco-animate d-flex justify-content-center align-items-center fadeInUp ftco-animated" style="background-image: url('http://image.tmdb.org/t/p/original/{{ recommend.poster_path }}');">
               <div class="overlay"></div>
               <div class="text text-center p-4">
                 <img src="" alt="">
-                <h3><a href="#"></a></h3>
+                <h3><a href="{% url 'movies:detail' recommend.pk %}">{{ recommend }}</a></h3>
                 <span></span>
               </div>
             </div>
           </div>
-        {% comment %} {% endfor %} {% endcomment %}
-
-        <div class="col-md-6">
-          <h4>🌭Comment</h4>
-          <div id="movie-comment-area">
-            {% if movie_comments|length %}
-              <p id="cnt-movie-comment"><b>{{ movie_comments|length }}개의 댓글이 있습니다.</b></p>
-            {% endif %}
-              {% for comment in movie_comments %}
-                <div>
-                  {{ comment.user }} - {{ comment.content }}
-                </div>
-              {% empty %}
-                <p id="cnt-movie-comment"><b>댓글이 없어요..</b></p>
-              {% endfor %}
-          </div>
-          <hr>
-          <form class="d-flex justufy-content-start" method="POST" id="comment-form" data-movie-pk="{{ movie.pk }}">
-            {% csrf_token %}
-            <div class="my-auto p-2">
-              <textarea name="content" id="id_content" cols="50" rows="2"></textarea>
-            </div>
-            <p class="mt-3"><input type="submit" class="btn btn-white btn-outline-white"></p>
-          </form>
+        {% endfor %}
+      </div>
+      <div class="col-md-6">
+        <h4>🌭Comment</h4>
+        <div id="movie-comment-area">
+          {% if movie_comments|length %}
+            <p id="cnt-movie-comment"><b>{{ movie_comments|length }}개의 댓글이 있습니다.</b></p>
+          {% endif %}
+            {% for comment in movie_comments %}
+              <div>
+                {{ comment.user }} - {{ comment.content }}
+              </div>
+            {% empty %}
+              <p id="cnt-movie-comment"><b>댓글이 없어요..</b></p>
+            {% endfor %}
         </div>
-
+        <hr>
+        <form class="d-flex justufy-content-start" method="POST" id="comment-form" data-movie-pk="{{ movie.pk }}">
+          {% csrf_token %}
+          <div class="my-auto p-2">
+            <textarea name="content" id="id_content" cols="50" rows="2"></textarea>
+          </div>
+          <p class="mt-3"><input type="submit" class="btn btn-white btn-outline-white"></p>
+        </form>
       </div>
     </div>
 
