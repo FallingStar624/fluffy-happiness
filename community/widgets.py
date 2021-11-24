@@ -27,12 +27,12 @@ class starWidget(forms.TextInput):
     class Media:
         css = {
             'all': [
-                'widgets/rateit.js-master/scripts/rateit.css',
+                'widgets/rateit.js-master/script/rateit.css',
             ],
         }
         js = [
             "//code.jquery.com/jquery-3.4.1.min.js",
-            'widgets/rateit.js-master/scripts/jquery.rateit.min.js',
+            'widgets/rateit.js-master/script/jquery.rateit.min.js',
         ]
 
     def build_attrs(self, *args, **kwargs):
