@@ -74,63 +74,72 @@
   checks.forEach((check) => {
     console.log(check)
     check.addEventListener('click', (event) => {
-      console.log("123")
+      const user = document.querySelector('#user-status').getAttribute('data-value')
       const moviePk = event.target.dataset.moviePk
-      axios.post(`/movies/${moviePk}/watch/`, {}, {
-        headers: {'X-CSRFToken': csrftoken}
-      })
-        .then((res) => {
-          console.log(res)
-          console.log(event)
-          event.target.classList.toggle('fa-eye')
-          event.target.classList.toggle('fa-eye-slash')
-
-          const watchSpan = document.querySelector(`#watch-count-${moviePk}`)
-          watchSpan.innerText = res.data.count
+      if (user === 'AnonymousUser') {
+        alert('로그인이 필요합니다!')
+      } else {
+        axios.post(`/movies/${moviePk}/watch/`, {}, {
+          headers: {'X-CSRFToken': csrftoken}
         })
+          .then((res) => {
+            event.target.classList.toggle('fa-eye')
+            event.target.classList.toggle('fa-eye-slash')
+
+            const watchSpan = document.querySelector(`#watch-count-${moviePk}`)
+            watchSpan.innerText = res.data.count
+          }) 
+      }
     })
   })
 </script>
 
 <script>
     const commentForm = document.querySelector('#comment-form')
+    const user = document.querySelector('#user-status').getAttribute('data-value')
 
     commentForm.addEventListener('submit', function (event) {
       event.preventDefault()
-      
-      const moviePk = event.target.dataset.moviePk
-      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-      const content = document.querySelector('#id_content').value
+      if ( user === 'AnonymousUser') {
+        alert('로그인이 필요합니다!')
+        const userInput = document.querySelector('#id_content')
+        userInput.value = ""
+      } else {
+        const moviePk = event.target.dataset.moviePk
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const content = document.querySelector('#id_content').value
 
-      const formData = new FormData()
-      formData.append('content', content)
-      
-      axios({
-        method: 'post',
-        url: `/movies/${moviePk}/comments/create/`,
-        data: formData,
-        headers: {'X-CSRFToken': csrftoken}
-      })
-        .then((res) => {
-          const commentArea = document.querySelector('#movie-comment-area')
-          const cntComment = document.querySelector('#cnt-movie-comment')
-          const div = document.createElement('div')
-          const mb = document.createElement('b')
-
-          if (commentArea.innerText == "댓글이 없어요..") {
-            const p = document.querySelector('#cnt-movie-comment')
-            p.innerText = ""
-          }
-          
-          cntComment.innerText = ""
-          mb.innerText = `${res.data.reviewcnt}개의 댓글이 있습니다.`
-          cntComment.appendChild(mb)
-
-          div.innerText = `${res.data.username} - ${res.data.moviecontent}`
-          commentArea.appendChild(div)
-
-          event.target.reset()
+        const formData = new FormData()
+        formData.append('content', content)
+        
+        axios({
+          method: 'post',
+          url: `/movies/${moviePk}/comments/create/`,
+          data: formData,
+          headers: {'X-CSRFToken': csrftoken}
         })
+          .then((res) => {
+            const commentArea = document.querySelector('#movie-comment-area')
+            const cntComment = document.querySelector('#cnt-movie-comment')
+            const div = document.createElement('div')
+            const mb = document.createElement('b')
+
+            if (commentArea.innerText == "댓글이 없어요..") {
+              const p = document.querySelector('#cnt-movie-comment')
+              p.innerText = ""
+            }
+            
+            cntComment.innerText = ""
+            mb.innerText = `${res.data.reviewcnt}개의 댓글이 있습니다.`
+            cntComment.appendChild(mb)
+
+            div.innerText = `${res.data.username} - ${res.data.moviecontent}`
+            commentArea.appendChild(div)
+
+            event.target.reset()
+          })
+      }
+      
     })
 
 
