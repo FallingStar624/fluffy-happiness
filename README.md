@@ -31,19 +31,19 @@
 
   - 페이지 구성
 
-     | ![anony_home](README.assets/anony_home.png)                  | ![signup](README.assets/signup.png)                          | ![login](README.assets/login.png)                            |
-    | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-    | `Anonymous Home `                                            | `Signup`                                                     | `Login`                                                      |
-    | ![review_create](README.assets/review_create.png)            | ![review_create_autocomplete](README.assets/review_create_autocomplete.png) | ![review_detail](README.assets/review_detail.png)            |
-    | `Review Create`                                              | `Review Create Autocomplete`                                 | `Review Detail`                                              |
-    | ![movie_index](README.assets/movie_index.png)                | ![movie_index_autocomplete](README.assets/movie_index_autocomplete.png) | ![movie_detail_1](README.assets/movie_detail_1.png)          |
-    | `Movie Index`                                                | `Movie Index Autocomplete`                                   | `Movie Detail Trailer`                                       |
-    | ![movie_detail_2](README.assets/movie_detail_2.png)          | ![test1_home](README.assets/test1_home.png)                  | ![test2_review_detail_update_or_delete](README.assets/test2_review_detail_update_or_delete.png) |
-    | `Movie Detail Recommend`                                     | `User Home`                                                  | `Review Authority Verification`                              |
-    | ![test2_review_detail_like_comment](README.assets/test2_review_detail_like_comment.png) | ![test2_follow_test1](README.assets/test2_follow_test1.png)  | ![review_index](README.assets/review_index.png)              |
-    | `Like and Comment`                                           | `User Profile`                                               | `Review Index`                                               |
-    | ![review_search](README.assets/review_search.png)            | ![anony_review_detail_no_comment](README.assets/anony_review_detail_no_comment.png) | ![about](README.assets/about.png)                            |
-    | `Review Search`                                              | `Movie Comment Verification`                                 | `About`                                                      |
+     |         ![anony_home](README.assets/anony_home.png)          |             ![signup](README.assets/signup.png)              |              ![login](README.assets/login.png)               |
+    | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+    |                      `Anonymous Home `                       |                           `Signup`                           |                           `Login`                            |
+    |      ![review_create](README.assets/review_create.png)       | ![review_create_autocomplete](README.assets/review_create_autocomplete.png) |      ![review_detail](README.assets/review_detail.png)       |
+    |                       `Review Create`                        |                 `Review Create Autocomplete`                 |                       `Review Detail`                        |
+    |        ![movie_index](README.assets/movie_index.png)         | ![movie_index_autocomplete](README.assets/movie_index_autocomplete.png) |     ![movie_detail_1](README.assets/movie_detail_1.png)      |
+    |                        `Movie Index`                         |                  `Movie Index Autocomplete`                  |                    `Movie Detail Trailer`                    |
+    |     ![movie_detail_2](README.assets/movie_detail_2.png)      |         ![test1_home](README.assets/test1_home.png)          | ![test2_review_detail_update_or_delete](README.assets/test2_review_detail_update_or_delete.png) |
+    |                   `Movie Detail Recommend`                   |                         `User Home`                          |               `Review Authority Verification`                |
+    | ![test2_review_detail_like_comment](README.assets/test2_review_detail_like_comment.png) | ![test2_follow_test1](README.assets/test2_follow_test1.png)  |       ![review_index](README.assets/review_index.png)        |
+    |                      `Like and Comment`                      |                        `User Profile`                        |                        `Review Index`                        |
+    |      ![review_search](README.assets/review_search.png)       | ![anony_review_detail_no_comment](README.assets/anony_review_detail_no_comment.png) |              ![about](README.assets/about.png)               |
+    |                       `Review Search`                        |                 `Movie Comment Verification`                 |                           `About`                            |
 
 
 
