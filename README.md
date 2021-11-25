@@ -137,3 +137,55 @@
 
   
 
+- #### 추천 알고리즘
+
+  ![movie_detail_2](README.assets/movie_detail_2.png)
+
+​	:framed_picture: 영화 상세 페이지의 영화 추천
+
+- Google Colab과 `tmdbv3api`라이브러리를 사용하여 tmdb api를 수집(약 9,000 개)
+
+- `pandas`(json->dataframe)와 `nltk`(불용어 처리 및 tokenize)를 활용하여 학습 데이터 set 생성
+
+- `gensim`라이브러리의 `word2vec`모델을 기본으로 아래와 같은 학습 모델 생성
+
+  ```python
+  model = gensim.models.Word2Vec(preprocessed, window=5, min_count=3, sg=1, iter=1000)
+  ```
+
+- 학습된 모델을 통해 영화 데이터들의 줄거리들에게 100차원 벡터를 부여하고 해당 벡터들의 중심값을 `scikit-learn`의 `Kmeas`를 라이브러리를 통해 도출
+- 해당 중심 점들 코사인 유사도로 계산하여 각 영화별로 가까운 6개의 영화들을 `recommend` 필드에 저장
+
+![alien_wv](README.assets/alien_wv.gif)
+
+> `alien`단어와 가까운 100개의 단어들
+
+| ![mickey](README.assets/mickey.jpg) | ![romantic](README.assets/romantic.jpg) |
+| :---------------------------------: | :-------------------------------------: |
+|              `mickey`               |               `romantic`                |
+
+
+
+### 5. 기타
+
+- 추가해볼만 한 기능
+
+  - 무비 index 속도 향상
+
+  - 추천 알고리즘 방식 변화(단어 유사도 -> 문장 유사도)
+
+    https://www.tensorflow.org/tutorials/text/word2vec#vectorize_sentences_from_the_corpus
+
+  - 영화 index 페이지 렌더링 적용(실패했던 템플릿 도전)
+
+- 지금까지의 큰 산들
+
+  - `2021.11.18`: 별점 기능 사건
+  - `2021.11.19`: datatime type 사건
+  - `2021.11.22`: 템플릿 렌더링 사건
+  - `2021.11.19 ~ 2021.11.24`: 자동 완성 사건
+
+- 느낀 점
+
+  - 💪김경수:
+  - 🦵최광호: "StackoverFlow 형님들 사..사랑합니다!"
