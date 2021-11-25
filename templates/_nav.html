@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco-navbar ftco-navbar-light site-navbar-target pt-0" id="ftco-navbar" style="position: sticky;">
 	    <div class="container" style="background-color: black; opacity: 0.7;">
-	      <a class="navbar-brand" href="{% url 'movies:home' %}">{Fluffy-Happiness}</a> 
+	      <a class="navbar-brand" href="{% url 'movies:home' %}" data-value="{{ user }}" id="user-status">{Fluffy-Happiness}</a> 
         {% comment %} home 화면으로 가도록 하이퍼링크 {% endcomment %}
         {% if user.is_authenticated %}
         <div>Welcome <a href="{% url 'accounts:profile' user.username %}">{{ user }}</a>!</div>

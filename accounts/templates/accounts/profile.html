@@ -25,8 +25,8 @@
               </p>
             </div>
             <ul class="about-info mt-4 px-md-0 px-2">
-              <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">Movie watched:</span> <span>January 01, 1987</span></li>
-              <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">Posted Reviews:</span> <span>San Francisco CA 97987</span></li>
+              <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">Movie watched:</span> <span>{{ host_movies | length }}</span></li>
+              <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">Posted Reviews:</span> <span>{{ host_reviews | length }}</span></li>
               <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">flollowers:</span> <span>{{ followers|length }}</span></li>
               <li class="d-flex"><span style="font-weight: 600; color: #fff;  width: 130px;">flollowings:</span> <span>{{ followings|length }}</span></li>
             </ul>

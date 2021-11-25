@@ -98,6 +98,7 @@
   <script>
     const hearts = document.querySelectorAll('.fa-heart')
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    const user = document.querySelector('#user-status').getAttribute('data-value')
     
 
     hearts.forEach((heart) => {
@@ -107,11 +108,13 @@
         userInput.value = ""
 
         const reviewPk = event.target.dataset.reviewPk
+        if ( user === "AnonymousUser") {
+          alert('로그인이 필요합니다!')
+        } else {
         axios.post(`/community/${reviewPk}/like/`, {}, {
           headers: {'X-CSRFToken': csrftoken}
         })
           .then((res) => {
-            console.log(res)
 
             if (res.data.liked) {
               event.target.style.color = 'red'
@@ -124,6 +127,7 @@
             const likeSpan = document.querySelector(`#like-count-${reviewPk}`)
             likeSpan.innerText = res.data.count
           })
+        }
       })
     })
   </script>
@@ -133,41 +137,46 @@
 
     commentForm.addEventListener('submit', function (event) {
       event.preventDefault()
-      
-      const reviewPk = event.target.dataset.reviewPk
-      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-      const content = document.querySelector('#id_content').value
-      console.log(content)
 
-      const formData = new FormData()
-      formData.append('content', content)
-      
-      axios({
-        method: 'post',
-        url: `/community/${reviewPk}/comments/create/`,
-        data: formData,
-        headers: {'X-CSRFToken': csrftoken}
-      })
-        .then((res) => {
-          const commentArea = document.querySelector('#comment-area')
-          const cntComment = document.querySelector('#cnt-comment')
-          const div = document.createElement('div')
-          const mb = document.createElement('b')
+      if ( user === "AnonymousUser") {
+        const userInput = document.querySelector('#id_content')
+        userInput.value = ""
+        alert('로그인이 필요합니다!')
+      } else {
+        const content = document.querySelector('#id_content').value     
+        const reviewPk = event.target.dataset.reviewPk
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
-          if (commentArea.innerText == "댓글이 없어요..") {
-            const p = document.querySelector('#cnt-comment')
-            p.innerText = ""
-          }
-          
-          cntComment.innerText = ""
-          mb.innerText = `${res.data.cnt}개의 댓글이 있습니다.`
-          cntComment.appendChild(mb)
-
-          div.innerText = `${res.data.username} - ${res.data.content}`
-          commentArea.appendChild(div)
-
-          event.target.reset()
+        const formData = new FormData()
+        formData.append('content', content)
+        
+        axios({
+          method: 'post',
+          url: `/community/${reviewPk}/comments/create/`,
+          data: formData,
+          headers: {'X-CSRFToken': csrftoken}
         })
+          .then((res) => {
+            const commentArea = document.querySelector('#comment-area')
+            const cntComment = document.querySelector('#cnt-comment')
+            const div = document.createElement('div')
+            const mb = document.createElement('b')
+
+            if (commentArea.innerText == "댓글이 없어요..") {
+              const p = document.querySelector('#cnt-comment')
+              p.innerText = ""
+            }
+            
+            cntComment.innerText = ""
+            mb.innerText = `${res.data.cnt}개의 댓글이 있습니다.`
+            cntComment.appendChild(mb)
+
+            div.innerText = `${res.data.username} - ${res.data.content}`
+            commentArea.appendChild(div)
+
+            event.target.reset()
+          })
+      }
     })
   
   </script>
