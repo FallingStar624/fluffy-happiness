@@ -10,7 +10,13 @@
 ### 2. 프로젝트 컨셉 및 주요 기능
 
 - 컨셉
+
 - 주요 기능
+
+  - 추천 알고리즘
+
+    <img src="README.assets/war.gif" alt="war" style="zoom:100%;" />
+
 
 
 
