@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 
@@ -64,6 +65,10 @@ def detail(request, review_pk):
 @login_required
 def update(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
+
+    if request.user != review.user:
+        return redirect('community:detail', review_pk)
+
     
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -86,10 +91,15 @@ def update(request, review_pk):
 
 @require_POST
 def delete(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    review.delete()
+    if request.method == "POST":
+        review = get_object_or_404(Review, pk=review_pk)
+    
+        if request.user == review.user:
+            review.delete()
+            return redirect('community:index')
+    
+    return redirect('community:detail', review_pk)
 
-    return redirect('community:index')
 
 
 @require_POST

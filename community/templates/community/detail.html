@@ -48,11 +48,11 @@
           <hr>
           <div class="d-flex">
             <form action="{% url 'community:update' review.pk %}">
-              <button class="btn btn-outline-light">수정</button>
+              <button class="btn btn-outline-light" id="update-btn">수정</button>
             </form>
             <form action="{% url 'community:delete' review.pk %}" class="ml-2" method="POST">
               {% csrf_token %}
-              <button class="btn btn-outline-danger">삭제</button>
+              <button class="btn btn-outline-danger" id="delete-btn" data-review-user="{{ review.user }}">삭제</button>
             </form>
           </div>
         
@@ -75,7 +75,7 @@
         <form class="d-flex justufy-content-start" method="POST" id="comment-form" data-review-pk="{{ review.pk }}">
           {% csrf_token %}
           <div class="my-auto p-2">
-            <textarea name="content" id="id_content" cols="40" rows="10">adfads</textarea>
+            <textarea name="content" id="id_content" cols="40" rows="10"></textarea>
           </div>
           <p class="mt-3"><input type="submit" class="btn btn-white btn-outline-white" value="등록"></p>
         </form>
@@ -95,6 +95,40 @@
 
 {% block script %}
 
+
+
+  <script>
+  
+  const deleteBtn = document.querySelector('#delete-btn')
+  const user = document.querySelector('#user-status').getAttribute('data-value')
+
+  deleteBtn.addEventListener('click', (event) => {
+
+        if ( user === "AnonymousUser" ) {
+          alert('로그인이 필요합니다!')
+        } else if ( user != deleteBtn.getAttribute('data-review-user') ) {
+          alert('권한이 없습니다.')
+        }
+      })
+
+  
+  </script>
+
+  <script>
+  
+    const updateBtn = document.querySelector('#update-btn')
+
+    updateBtn.addEventListener('click', (event) => {
+
+          if ( user === "AnonymousUser" ) {
+            alert('로그인이 필요합니다!')
+          } else if ( user != deleteBtn.getAttribute('data-review-user') ) {
+            alert('권한이 없습니다.')
+          }
+        })
+
+  
+  </script>
   <script>
     const hearts = document.querySelectorAll('.fa-heart')
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
