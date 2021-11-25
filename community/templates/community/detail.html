@@ -131,9 +131,7 @@
   </script>
   <script>
     const hearts = document.querySelectorAll('.fa-heart')
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    const user = document.querySelector('#user-status').getAttribute('data-value')
-    
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value    
 
     hearts.forEach((heart) => {
       heart.addEventListener('click', (event) => {
